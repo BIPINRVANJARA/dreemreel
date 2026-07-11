@@ -87,7 +87,7 @@ function Admin() {
   const [formPublished, setFormPublished] = useState(true);
   
   // Video source: "upload" | "url"
-  const [videoSource, setVideoSource] = useState<"upload" | "url">("url");
+  const [videoSource, setVideoSource] = useState<"upload" | "url">("upload");
   const [videoUrlInput, setVideoUrlInput] = useState("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
   
@@ -460,15 +460,15 @@ VALUES
     try {
       let finalVideoUrl = videoUrlInput;
 
-      // 1. Upload Video if needed
-      if (videoSource === "upload") {
-        if (!videoFile) {
-          throw new Error("Please select a video file to upload.");
-        }
+      // 1. Upload Video if a new file is selected
+      if (videoFile) {
         finalVideoUrl = await uploadToStorage(videoFile, "reels");
+      } else if (!editingReelId) {
+        // If we are creating a new reel, we MUST have a file uploaded
+        throw new Error("Please select a video file to upload.");
       }
 
-      if (!finalVideoUrl) throw new Error("Video URL or File is required.");
+      if (!finalVideoUrl) throw new Error("Video file is required.");
 
       const payload = {
         title: formTitle,
@@ -511,7 +511,7 @@ VALUES
     setFormDuration(30);
     setFormFeatured(false);
     setFormPublished(true);
-    setVideoSource("url");
+    setVideoSource("upload");
     setVideoUrlInput("");
     setVideoFile(null);
   };
@@ -525,7 +525,7 @@ VALUES
     setFormDuration(reel.duration_seconds);
     setFormFeatured(!!reel.featured);
     setFormPublished(true); // default to true since it's editable
-    setVideoSource("url");
+    setVideoSource("upload");
     setVideoUrlInput(reel.video_url);
     setShowReelModal(true);
   };
@@ -982,58 +982,29 @@ VALUES
                 </div>
               </div>
 
-              {/* VIDEO SOURCE TAB */}
+              {/* VIDEO SOURCE - UPLOAD ONLY */}
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold text-muted-foreground">Video Source</label>
-                  <div className="flex bg-background border border-border rounded-lg p-0.5">
-                    <button
-                      type="button"
-                      onClick={() => setVideoSource("url")}
-                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition cursor-pointer ${
-                        videoSource === "url" ? "bg-primary text-primary-foreground" : "text-muted-foreground"
-                      }`}
-                    >
-                      <Link2 className="h-3 w-3 inline mr-1" /> Paste URL
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setVideoSource("upload")}
-                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition cursor-pointer ${
-                        videoSource === "upload" ? "bg-primary text-primary-foreground" : "text-muted-foreground"
-                      }`}
-                    >
-                      <Upload className="h-3 w-3 inline mr-1" /> Upload File
-                    </button>
-                  </div>
-                </div>
-
-                {videoSource === "url" ? (
+                <label className="text-xs font-semibold text-muted-foreground block">Video File</label>
+                <div className="rounded-xl border border-dashed border-border p-4 bg-background text-center">
                   <input
-                    type="url"
-                    required
-                    placeholder="https://www.instagram.com/reel/... or direct .mp4 URL"
-                    value={videoUrlInput}
-                    onChange={(e) => setVideoUrlInput(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
+                    type="file"
+                    accept="video/mp4,video/quicktime,video/webm"
+                    onChange={handleVideoFileChange}
+                    className="hidden"
+                    id="video-file-input"
                   />
-                ) : (
-                  <div className="rounded-xl border border-dashed border-border p-4 bg-background text-center">
-                    <input
-                      type="file"
-                      accept="video/mp4,video/quicktime,video/webm"
-                      onChange={handleVideoFileChange}
-                      className="hidden"
-                      id="video-file-input"
-                    />
-                    <label htmlFor="video-file-input" className="cursor-pointer block space-y-2">
-                      <Video className="h-8 w-8 text-primary mx-auto" />
-                      <div className="text-xs font-medium text-white">
-                        {videoFile ? videoFile.name : "Select MP4, MOV, or WEBM file"}
-                      </div>
-                      <div className="text-[10px] text-muted-foreground">Max size: 50MB</div>
-                    </label>
-                  </div>
+                  <label htmlFor="video-file-input" className="cursor-pointer block space-y-2">
+                    <Video className="h-8 w-8 text-primary mx-auto" />
+                    <div className="text-xs font-medium text-white">
+                      {videoFile ? videoFile.name : "Select MP4, MOV, or WEBM file"}
+                    </div>
+                    <div className="text-[10px] text-muted-foreground">Max size: 50MB</div>
+                  </label>
+                </div>
+                {editingReelId && !videoFile && (
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Keep empty to retain the current video, or select a new file to replace it.
+                  </p>
                 )}
               </div>
 
