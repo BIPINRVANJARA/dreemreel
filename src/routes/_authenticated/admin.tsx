@@ -20,15 +20,12 @@ import {
   FileImage,
   Layers,
   Heart,
-  Instagram,
-  Settings,
   Mail,
   UserCheck,
   Smartphone
 } from "lucide-react";
 import { toast } from "sonner";
 import { CATEGORY_LABELS, type ReelCategory, type Reel } from "@/lib/mock";
-import { syncInstagramFeed, updateInstagramConfig } from "@/lib/instagram-actions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Admin — DreamReel" }, { name: "robots", content: "noindex" }] }),
@@ -69,7 +66,7 @@ function AdminReelVideo({ src }: { src: string }) {
 
 function Admin() {
   const nav = useNavigate();
-  const [activeTab, setActiveTab] = useState<"leads" | "reels" | "instagram">("leads");
+  const [activeTab, setActiveTab] = useState<"leads" | "reels">("leads");
   
   // States
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -96,12 +93,7 @@ function Admin() {
   
   const [savingReel, setSavingReel] = useState(false);
 
-  // Instagram Feed Config States
-  const [igAccessToken, setIgAccessToken] = useState("");
-  const [igBusinessId, setIgBusinessId] = useState("");
-  const [syncingIg, setSyncingIg] = useState(false);
-  const [savingIgConfig, setSavingIgConfig] = useState(false);
-  const [feedCacheInfo, setFeedCacheInfo] = useState<{ last_updated: string; count: number } | null>(null);
+
 
   // Load Data
   const loadData = async () => {
@@ -122,30 +114,14 @@ function Admin() {
       return;
     }
 
-    // Fetch leads, reels, and instagram settings
-    const [leadsRes, reelsRes, igConfigRes, igCacheRes] = await Promise.all([
+    // Fetch leads and reels
+    const [leadsRes, reelsRes] = await Promise.all([
       supabase.from("leads").select("*").order("created_at", { ascending: false }),
       supabase.from("reels").select("*").order("sort_order", { ascending: true }),
-      supabase.from("site_settings").select("value").eq("key", "instagram_config").maybeSingle(),
-      supabase.from("site_settings").select("value").eq("key", "instagram_feed_cache").maybeSingle(),
     ]);
 
     setLeads(leadsRes.data ?? []);
     setReels((reelsRes.data as Reel[]) ?? []);
-
-    if (igConfigRes.data?.value) {
-      const val = igConfigRes.data.value as { access_token?: string; business_account_id?: string };
-      setIgAccessToken(val.access_token ?? "");
-      setIgBusinessId(val.business_account_id ?? "");
-    }
-
-    if (igCacheRes.data?.value) {
-      const val = igCacheRes.data.value as { last_updated: string; feed?: any[] };
-      setFeedCacheInfo({
-        last_updated: val.last_updated,
-        count: val.feed?.length ?? 0
-      });
-    }
 
     setLoading(false);
   };
@@ -577,36 +553,7 @@ VALUES
     }
   };
 
-  // Instagram Settings Save
-  const saveIgConfig = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSavingIgConfig(true);
-    try {
-      await updateInstagramConfig({ access_token: igAccessToken, business_account_id: igBusinessId });
-      toast.success("Instagram credentials saved!");
-      loadData();
-    } catch (err: any) {
-      toast.error(err.message || "Failed to save configuration.");
-    } finally {
-      setSavingIgConfig(false);
-    }
-  };
 
-  // Instagram Sync Trigger
-  const triggerIgSync = async () => {
-    setSyncingIg(true);
-    toast.loading("Syncing feed from Instagram Graph API...", { id: "ig-sync" });
-    try {
-      const res = await syncInstagramFeed();
-      toast.success(`Synced ${res.count} items successfully! Feed updated.`, { id: "ig-sync" });
-      loadData();
-    } catch (err: any) {
-      console.error(err);
-      toast.error(err.message || "Failed to sync Instagram feed.", { id: "ig-sync" });
-    } finally {
-      setSyncingIg(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -672,7 +619,7 @@ VALUES
   return (
     <div className="min-h-dvh bg-[#050507] text-white">
       <header className="border-b border-border bg-surface/50 backdrop-blur sticky top-0 z-40">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-4">
           <div className="flex items-center gap-4">
             <Link
               to="/"
@@ -704,14 +651,7 @@ VALUES
             >
               Manage Reels
             </button>
-            <button
-              onClick={() => setActiveTab("instagram")}
-              className={`rounded-full px-4 py-1.5 text-xs font-medium transition cursor-pointer ${
-                activeTab === "instagram" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-white"
-              }`}
-            >
-              Instagram Feed
-            </button>
+
           </nav>
 
           <button
@@ -740,18 +680,11 @@ VALUES
           >
             Reels
           </button>
-          <button
-            onClick={() => setActiveTab("instagram")}
-            className={`flex-1 py-3 text-center text-xs font-medium border-b-2 transition ${
-              activeTab === "instagram" ? "border-primary text-primary" : "border-transparent text-muted-foreground"
-            }`}
-          >
-            Instagram
-          </button>
+
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-8">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {/* LEADS TAB */}
         {activeTab === "leads" && (
           <section className="space-y-6">
@@ -780,7 +713,8 @@ VALUES
                   WhatsApp Dashboard <ExternalLink className="h-3 w-3" />
                 </a>
               </div>
-              <div className="overflow-x-auto rounded-2xl border border-border bg-surface/30">
+              {/* Desktop Table */}
+              <div className="hidden md:block overflow-x-auto rounded-2xl border border-border bg-surface/30">
                 <table className="w-full text-sm">
                   <thead className="bg-surface/80 text-left text-xs text-muted-foreground border-b border-border">
                     <tr>
@@ -838,6 +772,52 @@ VALUES
                   </tbody>
                 </table>
               </div>
+
+              {/* Mobile Cards */}
+              <div className="md:hidden space-y-3">
+                {leads.map((l) => (
+                  <div key={l.id} className="rounded-2xl border border-border bg-surface/30 p-4 space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="font-medium text-white text-sm">{l.name}</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          {new Date(l.created_at).toLocaleDateString(undefined, {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </p>
+                      </div>
+                      <span className="rounded-full bg-primary/10 border border-primary/20 px-2.5 py-0.5 text-primary text-[10px] font-semibold shrink-0">
+                        {l.event_type ?? "General"}
+                      </span>
+                    </div>
+                    <div className="text-xs space-y-1">
+                      {l.phone && <div className="text-white">{l.phone}</div>}
+                      {l.email && <div className="text-muted-foreground flex items-center gap-1"><Mail className="h-3 w-3" />{l.email}</div>}
+                      {l.event_date && <div className="text-muted-foreground text-[11px]">Event: {l.event_date}</div>}
+                    </div>
+                    {l.message && (
+                      <p className="text-xs text-muted-foreground line-clamp-2">{l.message}</p>
+                    )}
+                    {l.phone && (
+                      <a
+                        href={`https://wa.me/${l.phone.replace(/\D/g, "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 text-xs text-emerald-400 hover:bg-emerald-500/20 transition"
+                      >
+                        WhatsApp <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+                ))}
+                {leads.length === 0 && (
+                  <div className="rounded-2xl border border-dashed border-border p-12 text-center text-sm text-muted-foreground">
+                    No leads received yet.
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         )}
@@ -845,7 +825,7 @@ VALUES
         {/* REELS TAB */}
         {activeTab === "reels" && (
           <section className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
                 <h2 className="text-xl font-semibold text-white">Reel Media Portfolio</h2>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -857,13 +837,13 @@ VALUES
                   resetReelForm();
                   setShowReelModal(true);
                 }}
-                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 transition cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-5 py-2.5 sm:px-4 sm:py-2 text-sm font-medium text-primary-foreground hover:opacity-90 transition cursor-pointer"
               >
                 <Plus className="h-4 w-4" /> Add Reel
               </button>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {reels.map((r) => (
                 <div
                   key={r.id}
@@ -926,15 +906,7 @@ VALUES
                   <div className="p-3 border-t border-border flex items-center justify-between bg-surface/40 text-xs">
                     <span className="text-muted-foreground">Duration: {r.duration_seconds}s</span>
                     <span className="text-muted-foreground flex items-center gap-1">
-                      {r.video_url.includes("instagram.com") ? (
-                        <>
-                          <Instagram className="h-3.5 w-3.5 text-primary" /> IG Embed
-                        </>
-                      ) : (
-                        <>
-                          <Video className="h-3.5 w-3.5 text-emerald-400" /> Direct Video
-                        </>
-                      )}
+                      <Video className="h-3.5 w-3.5 text-emerald-400" /> Direct Video
                     </span>
                   </div>
                 </div>
@@ -951,89 +923,7 @@ VALUES
           </section>
         )}
 
-        {/* INSTAGRAM TAB */}
-        {activeTab === "instagram" && (
-          <section className="max-w-2xl mx-auto rounded-3xl border border-border bg-surface/25 p-8 shadow-xl space-y-8">
-            <div>
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                <Instagram className="h-5 w-5 text-primary" /> Instagram Business Feed
-              </h2>
-              <p className="text-xs text-muted-foreground mt-1">
-                Link your Instagram Business Account (via Facebook Login) to display your actual Instagram feed in the footer.
-              </p>
-            </div>
 
-            <form onSubmit={saveIgConfig} className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-muted-foreground">Facebook/IG Access Token</label>
-                <input
-                  type="password"
-                  required
-                  placeholder="EAAW..."
-                  value={igAccessToken}
-                  onChange={(e) => setIgAccessToken(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm focus:border-primary focus:outline-none text-white"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-muted-foreground">Instagram Business Account ID</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="178414..."
-                  value={igBusinessId}
-                  onChange={(e) => setIgBusinessId(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm focus:border-primary focus:outline-none text-white"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={savingIgConfig}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-60 cursor-pointer transition"
-              >
-                {savingIgConfig && <Loader2 className="h-4 w-4 animate-spin" />}
-                Save Configuration
-              </button>
-            </form>
-
-            <hr className="border-border" />
-
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-sm font-semibold text-white">Synchronization Cache</h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Synchronize and cache feed items in database settings. This prevents API rate limits and speeds up page loads.
-                </p>
-              </div>
-
-              {feedCacheInfo && (
-                <div className="rounded-2xl bg-background/50 border border-border p-4 text-xs space-y-1.5">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Last Synced:</span>
-                    <span className="font-semibold text-white">
-                      {new Date(feedCacheInfo.last_updated).toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Cached Posts count:</span>
-                    <span className="font-semibold text-white">{feedCacheInfo.count} items</span>
-                  </div>
-                </div>
-              )}
-
-              <button
-                onClick={triggerIgSync}
-                disabled={syncingIg || !igAccessToken || !igBusinessId}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full border border-border bg-surface py-2.5 text-sm font-medium hover:bg-background disabled:opacity-60 cursor-pointer transition text-white"
-              >
-                {syncingIg ? <Loader2 className="h-4 w-4 animate-spin text-primary" /> : <RefreshCw className="h-4 w-4 text-primary" />}
-                Sync Instagram Feed Now
-              </button>
-            </div>
-          </section>
-        )}
       </main>
 
       {/* REEL ADD / EDIT MODAL */}
@@ -1062,7 +952,7 @@ VALUES
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-muted-foreground">Category</label>
                   <select
@@ -1149,7 +1039,7 @@ VALUES
 
 
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-muted-foreground">Duration (sec)</label>
                   <input
@@ -1219,7 +1109,7 @@ function StatCard({
   valueClassName?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-border bg-surface/20 p-5 shadow">
+    <div className="rounded-2xl border border-border bg-gradient-to-br from-surface/30 via-surface/20 to-surface/10 p-5 shadow-lg hover:shadow-xl hover:border-primary/30 transition-all duration-300">
       <p className="label text-[10px] text-muted-foreground tracking-wider uppercase font-bold">{label}</p>
       <p className={valueClassName}>{value}</p>
     </div>
