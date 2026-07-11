@@ -458,17 +458,25 @@ VALUES
     toast.loading("Saving reel...", { id: "saving-reel" });
 
     try {
-      let finalVideoUrl = videoUrlInput;
+      let finalVideoUrl = "";
 
-      // 1. Upload Video if a new file is selected
-      if (videoFile) {
-        finalVideoUrl = await uploadToStorage(videoFile, "reels");
-      } else if (!editingReelId) {
-        // If we are creating a new reel, we MUST have a file uploaded
-        throw new Error("Please select a video file to upload.");
+      if (videoSource === "url") {
+        if (!videoUrlInput) {
+          throw new Error("Please enter a video link.");
+        }
+        finalVideoUrl = videoUrlInput;
+      } else {
+        // Upload source
+        if (videoFile) {
+          finalVideoUrl = await uploadToStorage(videoFile, "reels");
+        } else if (editingReelId) {
+          finalVideoUrl = videoUrlInput;
+        } else {
+          throw new Error("Please select a video file to upload.");
+        }
       }
 
-      if (!finalVideoUrl) throw new Error("Video file is required.");
+      if (!finalVideoUrl) throw new Error("Video file or link is required.");
 
       const payload = {
         title: formTitle,
@@ -525,7 +533,10 @@ VALUES
     setFormDuration(reel.duration_seconds);
     setFormFeatured(!!reel.featured);
     setFormPublished(true); // default to true since it's editable
-    setVideoSource("upload");
+    
+    // Auto-detect if video is an upload (Supabase Storage) or external link
+    const isUpload = reel.video_url.includes("/storage/v1/object/public/");
+    setVideoSource(isUpload ? "upload" : "url");
     setVideoUrlInput(reel.video_url);
     setShowReelModal(true);
   };
@@ -982,29 +993,65 @@ VALUES
                 </div>
               </div>
 
-              {/* VIDEO SOURCE - UPLOAD ONLY */}
+              {/* VIDEO SOURCE SELECTOR */}
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-muted-foreground block">Video File</label>
-                <div className="rounded-xl border border-dashed border-border p-4 bg-background text-center">
-                  <input
-                    type="file"
-                    accept="video/mp4,video/quicktime,video/webm"
-                    onChange={handleVideoFileChange}
-                    className="hidden"
-                    id="video-file-input"
-                  />
-                  <label htmlFor="video-file-input" className="cursor-pointer block space-y-2">
-                    <Video className="h-8 w-8 text-primary mx-auto" />
-                    <div className="text-xs font-medium text-white">
-                      {videoFile ? videoFile.name : "Select MP4, MOV, or WEBM file"}
-                    </div>
-                    <div className="text-[10px] text-muted-foreground">Max size: 50MB</div>
-                  </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-muted-foreground">Video Source</label>
+                  <div className="flex bg-background border border-border rounded-lg p-0.5">
+                    <button
+                      type="button"
+                      onClick={() => setVideoSource("url")}
+                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition cursor-pointer ${
+                        videoSource === "url" ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+                      }`}
+                    >
+                      <Link2 className="h-3.5 w-3.5 inline mr-1" /> Paste Link
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setVideoSource("upload")}
+                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition cursor-pointer ${
+                        videoSource === "upload" ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+                      }`}
+                    >
+                      <Upload className="h-3.5 w-3.5 inline mr-1" /> Upload File
+                    </button>
+                  </div>
                 </div>
-                {editingReelId && !videoFile && (
-                  <p className="text-[10px] text-muted-foreground mt-1">
-                    Keep empty to retain the current video, or select a new file to replace it.
-                  </p>
+
+                {videoSource === "url" ? (
+                  <input
+                    type="url"
+                    required
+                    placeholder="https://www.example.com/video.mp4 or other link"
+                    value={videoUrlInput}
+                    onChange={(e) => setVideoUrlInput(e.target.value)}
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary"
+                  />
+                ) : (
+                  <>
+                    <div className="rounded-xl border border-dashed border-border p-4 bg-background text-center">
+                      <input
+                        type="file"
+                        accept="video/mp4,video/quicktime,video/webm"
+                        onChange={handleVideoFileChange}
+                        className="hidden"
+                        id="video-file-input"
+                      />
+                      <label htmlFor="video-file-input" className="cursor-pointer block space-y-2">
+                        <Video className="h-8 w-8 text-primary mx-auto" />
+                        <div className="text-xs font-medium text-white">
+                          {videoFile ? videoFile.name : "Select MP4, MOV, or WEBM file"}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground">Max size: 50MB</div>
+                      </label>
+                    </div>
+                    {editingReelId && !videoFile && (
+                      <p className="text-[10px] text-muted-foreground mt-1">
+                        Keep empty to retain the current video, or select a new file to replace it.
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
 
