@@ -1,6 +1,6 @@
 import { SERVICES } from "@/lib/mock";
 import { motion } from "framer-motion";
-import { Plus, Minus, ArrowRight, Clapperboard, Heart, Cake, Scissors, Video, HelpCircle, Check } from "lucide-react";
+import { Plus, Minus, ArrowRight, Clapperboard, Heart, Cake, Scissors, Video, HelpCircle, Check, Clock } from "lucide-react";
 import { useState } from "react";
 
 function getServiceIcon(icon: string) {
@@ -10,6 +10,7 @@ function getServiceIcon(icon: string) {
     case "cake": return <Cake className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-300" />;
     case "scissors": return <Scissors className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-300" />;
     case "video": return <Video className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-300" />;
+    case "clock": return <Clock className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-300" />;
     default: return <HelpCircle className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-300" />;
   }
 }
