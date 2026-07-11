@@ -4,6 +4,7 @@ import { Volume2, VolumeX, Heart, MapPin, Clock, ArrowRight } from "lucide-react
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MOCK_REELS, type Reel } from "@/lib/mock";
+import { useReelStore } from "@/lib/reel-store";
 
 const FALLBACK_THUMBNAILS: Record<string, string> = {
   birthday: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=70",
@@ -186,6 +187,7 @@ function ShowcasePhoneCard({
   isMuted: boolean;
   onMuteToggle: () => void;
 }) {
+  const store = useReelStore();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hearts, setHearts] = useState<{ id: string; x: number; y: number; rotate: number }[]>([]);
   const [showMutePrompt, setShowMutePrompt] = useState(false);
@@ -195,20 +197,22 @@ function ShowcasePhoneCard({
     setLoaded(false);
   }, [reel.video_url]);
 
-  // Play / Pause video based on intersection observer result
+  // Play / Pause video based on intersection observer result and global store state
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isPlaying) {
+    if (isPlaying && !store.currentId) {
       video.play().catch((err) => {
         console.log("Autoplay blocked by browser.", err);
       });
     } else {
       video.pause();
-      video.currentTime = 0;
+      if (!isPlaying) {
+        video.currentTime = 0;
+      }
     }
-  }, [isPlaying]);
+  }, [isPlaying, store.currentId]);
 
   // Sync global mute state to the local video element
   useEffect(() => {
@@ -220,6 +224,10 @@ function ShowcasePhoneCard({
   // Handle single tap to toggle mute
   const handleSingleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    // Stop any playing portfolio reel so sounds don't overlap
+    if (store.currentId) {
+      store.close();
+    }
     onMuteToggle();
     setShowMutePrompt(true);
     setTimeout(() => setShowMutePrompt(false), 800);
