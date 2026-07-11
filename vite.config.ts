@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Override the default cloudflare-module preset — we deploy to Netlify
+  nitro: {
+    preset: "netlify",
+  },
 });

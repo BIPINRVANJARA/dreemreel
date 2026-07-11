@@ -1,11 +1,7 @@
 [build]
   command = "npm run build"
-  publish = "dist"
+  publish = ".output/public"
 
-[build.environment]
-  NITRO_PRESET = "netlify-edge"
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/edge-functions/server"
-  status = 200
+[functions]
+  directory = ".output/server"
+  node_bundler = "esbuild"
