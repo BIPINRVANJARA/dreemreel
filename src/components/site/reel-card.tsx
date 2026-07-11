@@ -1,6 +1,6 @@
 import { Play, Clock } from "lucide-react";
 import type { Reel } from "@/lib/mock";
-import { CATEGORY_LABELS } from "@/lib/mock";
+import { CATEGORY_LABELS, getEmbedUrl } from "@/lib/mock";
 import { useRef, useState, useEffect } from "react";
 
 export function ReelCard({ reel, onOpen, size = "md", autoplay = false }: { reel: Reel; onOpen: () => void; size?: "md" | "lg"; autoplay?: boolean }) {
@@ -12,24 +12,33 @@ export function ReelCard({ reel, onOpen, size = "md", autoplay = false }: { reel
   }, [reel.video_url]);
 
   const w = size === "lg" ? "w-[280px] sm:w-[320px]" : "w-[220px] sm:w-[260px]";
+  const embedUrl = getEmbedUrl(reel.video_url);
 
   return (
     <button
       onClick={onOpen}
       className={`group relative shrink-0 ${w} aspect-[9/16] overflow-hidden rounded-2xl border border-white/5 bg-surface/30 backdrop-blur-md transition hover:-translate-y-1 duration-300 hover:border-primary/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] cursor-pointer`}
     >
-      <video 
-        key={reel.video_url}
-        ref={vRef} 
-        src={reel.video_url} 
-        muted 
-        loop 
-        playsInline 
-        autoPlay={true}
-        preload="auto"
-        onLoadedData={() => setLoaded(true)}
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`} 
-      />
+      {embedUrl ? (
+        <img
+          src={reel.thumbnail_url || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=70"}
+          alt={reel.title}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      ) : (
+        <video 
+          key={reel.video_url}
+          ref={vRef} 
+          src={reel.video_url} 
+          muted 
+          loop 
+          playsInline 
+          autoPlay={true}
+          preload="auto"
+          onLoadedData={() => setLoaded(true)}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`} 
+        />
+      )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent transition-opacity duration-300 group-hover:from-black/95 group-hover:via-black/35" />
       <div className="absolute inset-x-3 top-3 flex items-center justify-between">
         <span className="label rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur border border-white/5">{CATEGORY_LABELS[reel.category] || "Other"}</span>

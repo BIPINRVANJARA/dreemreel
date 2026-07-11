@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useReelStore } from "@/lib/reel-store";
 import { X, ChevronLeft, ChevronRight, Volume2, VolumeX, MapPin, Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getEmbedUrl } from "@/lib/mock";
 
 export function ReelPlayerModal() {
   const store = useReelStore();
@@ -13,10 +14,16 @@ export function ReelPlayerModal() {
   const currentReel = reels.find((r) => r.id === currentId);
   const currentIndex = reels.findIndex((r) => r.id === currentId);
 
+  const embedUrl = currentReel ? getEmbedUrl(currentReel.video_url) : null;
+
   // Reset loaded status on video url change
   useEffect(() => {
-    setLoaded(false);
-  }, [currentReel?.video_url]);
+    if (embedUrl) {
+      setLoaded(true); // iframes handle their own loading
+    } else {
+      setLoaded(false);
+    }
+  }, [currentReel?.video_url, embedUrl]);
 
   // Handle keyboard events (Escape to close, Left/Right arrows to navigate)
   useEffect(() => {
@@ -98,21 +105,30 @@ export function ReelPlayerModal() {
           onClick={(e) => e.stopPropagation()}
           className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-3xl border border-white/10 bg-zinc-950 overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] flex flex-col justify-between cursor-grab active:cursor-grabbing"
         >
-          {/* Main Video element */}
-          <video
-            key={currentReel.video_url}
-            ref={videoRef}
-            src={currentReel.video_url}
-            autoPlay
-            playsInline
-            controls
-            loop
-            muted={isMuted}
-            onLoadedData={() => setLoaded(true)}
-            className={`w-full h-full object-cover select-none bg-black transition-opacity duration-300 ${
-              loaded ? "opacity-100" : "opacity-0"
-            }`}
-          />
+          {/* Main Video or Embed element */}
+          {embedUrl ? (
+            <iframe
+              src={embedUrl}
+              className="w-full h-full border-0 bg-black"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <video
+              key={currentReel.video_url}
+              ref={videoRef}
+              src={currentReel.video_url}
+              autoPlay
+              playsInline
+              controls
+              loop
+              muted={isMuted}
+              onLoadedData={() => setLoaded(true)}
+              className={`w-full h-full object-cover select-none bg-black transition-opacity duration-300 ${
+                loaded ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          )}
 
           {/* Loading spinner */}
           {!loaded && (
@@ -127,13 +143,17 @@ export function ReelPlayerModal() {
 
           {/* Close & Mute Controls Header */}
           <div className="absolute top-4 inset-x-4 flex items-center justify-between z-20">
-            <button
-              onClick={() => setIsMuted(!isMuted)}
-              className="grid h-10 w-10 place-items-center rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur border border-white/10 transition cursor-pointer"
-              title={isMuted ? "Unmute" : "Mute"}
-            >
-              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            </button>
+            {!embedUrl ? (
+              <button
+                onClick={() => setIsMuted(!isMuted)}
+                className="grid h-10 w-10 place-items-center rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur border border-white/10 transition cursor-pointer"
+                title={isMuted ? "Unmute" : "Mute"}
+              >
+                {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              </button>
+            ) : (
+              <div /> // spacer
+            )}
             
             <button
               onClick={close}

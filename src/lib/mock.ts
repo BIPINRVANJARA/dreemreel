@@ -89,3 +89,38 @@ export const STATS = [
   { value: 50, suffix: "+", label: "Happy clients" },
   { value: 5, suffix: "★", label: "Average rating" },
 ];
+
+export function getEmbedUrl(url: string): string | null {
+  if (!url) return null;
+
+  // 1. YouTube
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    let videoId = "";
+    if (url.includes("shorts/")) {
+      videoId = url.split("shorts/")[1]?.split(/[?#]/)[0];
+    } else if (url.includes("watch?v=")) {
+      videoId = url.split("watch?v=")[1]?.split(/[?#]/)[0];
+    } else if (url.includes("youtu.be/")) {
+      videoId = url.split("youtu.be/")[1]?.split(/[?#]/)[0];
+    } else if (url.includes("embed/")) {
+      videoId = url.split("embed/")[1]?.split(/[?#]/)[0];
+    }
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=1&modestbranding=1&rel=0`;
+    }
+  }
+
+  // 2. Instagram
+  if (url.includes("instagram.com")) {
+    let shortcode = "";
+    const matches = url.match(/(?:reel|p)\/([^/?#]+)/);
+    if (matches && matches[1]) {
+      shortcode = matches[1];
+    }
+    if (shortcode) {
+      return `https://www.instagram.com/reel/${shortcode}/embed/`;
+    }
+  }
+
+  return null;
+}
