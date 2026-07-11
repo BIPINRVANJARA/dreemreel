@@ -32,8 +32,9 @@ export function SiteFooter() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-border/60 px-6 py-5 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} DreamReel Production. Every moment, cinematically.
+      <div className="border-t border-border/60 px-6 py-5 text-center text-xs text-muted-foreground space-y-1">
+        <p>Made by <a href="https://instagram.com/kyvraone" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">IG @kyvraone</a></p>
+        <p>© {new Date().getFullYear()} All rights reserved by kyvraone</p>
       </div>
     </footer>
   );
