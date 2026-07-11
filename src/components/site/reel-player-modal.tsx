@@ -36,6 +36,18 @@ export function ReelPlayerModal() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, currentIndex, reels, close, store]);
 
+  // Disable body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   if (!isOpen || !currentReel) return null;
 
   const handlePrev = (e: React.MouseEvent) => {
@@ -71,12 +83,20 @@ export function ReelPlayerModal() {
 
         {/* Modal content container */}
         <motion.div
+          drag="y"
+          dragConstraints={{ top: 0, bottom: 0 }}
+          dragElastic={0.6}
+          onDragEnd={(event, info) => {
+            if (Math.abs(info.offset.y) > 100) {
+              close();
+            }
+          }}
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-3xl border border-white/10 bg-zinc-950 overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] flex flex-col justify-between"
+          className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[9/16] rounded-3xl border border-white/10 bg-zinc-950 overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] flex flex-col justify-between cursor-grab active:cursor-grabbing"
         >
           {/* Main Video element */}
           <video
