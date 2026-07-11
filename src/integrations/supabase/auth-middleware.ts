@@ -33,6 +33,10 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server(
   async ({ next }) => {
     const getEnv = (key: string): string | undefined => {
+      // Check server context environment passed to the fetch handler
+      if (typeof globalThis !== 'undefined' && (globalThis as any).__server_env__) {
+        return (globalThis as any).__server_env__[key];
+      }
       // Check Deno environment (for Netlify Edge Functions)
       if (typeof (globalThis as any).Deno !== 'undefined' && (globalThis as any).Deno.env) {
         return (globalThis as any).Deno.env.get(key);
