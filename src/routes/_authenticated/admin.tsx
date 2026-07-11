@@ -1020,14 +1020,19 @@ VALUES
                 </div>
 
                 {videoSource === "url" ? (
-                  <input
-                    type="url"
-                    required
-                    placeholder="https://www.example.com/video.mp4 or other link"
-                    value={videoUrlInput}
-                    onChange={(e) => setVideoUrlInput(e.target.value)}
-                    className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary"
-                  />
+                  <div className="space-y-1.5">
+                    <input
+                      type="url"
+                      required
+                      placeholder="e.g. https://www.dropbox.com/s/xyz/video.mp4?dl=0 or direct MP4 link"
+                      value={videoUrlInput}
+                      onChange={(e) => setVideoUrlInput(e.target.value)}
+                      className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary"
+                    />
+                    <p className="text-[10px] text-amber-400 font-medium leading-relaxed">
+                      ⚠️ Social media links (Instagram, YouTube) are webpage templates and cannot autoplay natively or support sound toggles. Please upload the file directly, or paste a Dropbox / Google Drive link (we automatically convert these to raw streams to save your Supabase space!).
+                    </p>
+                  </div>
                 ) : (
                   <>
                     <div className="rounded-xl border border-dashed border-border p-4 bg-background text-center">

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, VolumeX, Heart, MapPin, Clock, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { MOCK_REELS, type Reel, getEmbedUrl } from "@/lib/mock";
+import { MOCK_REELS, type Reel, getDirectVideoUrl } from "@/lib/mock";
 import { useReelStore } from "@/lib/reel-store";
 
 const FALLBACK_THUMBNAILS: Record<string, string> = {
@@ -214,15 +214,11 @@ function ShowcasePhoneCard({
   const [showMutePrompt, setShowMutePrompt] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  const embedUrl = getEmbedUrl(reel.video_url);
+  const directUrl = getDirectVideoUrl(reel.video_url);
 
   useEffect(() => {
-    if (embedUrl) {
-      setLoaded(true);
-    } else {
-      setLoaded(false);
-    }
-  }, [reel.video_url, embedUrl]);
+    setLoaded(false);
+  }, [directUrl]);
 
   // Play / Pause video based on intersection observer result and global store state
   useEffect(() => {
@@ -307,26 +303,18 @@ function ShowcasePhoneCard({
           onDoubleClick={handleDoubleClick}
           className="relative w-full h-full rounded-[34px] overflow-hidden bg-[#0a0a0c] cursor-pointer"
         >
-          {/* Main Video or Embed */}
-          {embedUrl ? (
-            <iframe
-              src={isPlaying ? embedUrl : ""}
-              className="w-full h-full border-0 bg-black"
-              allow="autoplay; encrypted-media"
-            />
-          ) : (
-            <video
-              key={reel.video_url}
-              ref={videoRef}
-              src={reel.video_url}
-              muted={isMuted}
-              playsInline
-              loop
-              preload="metadata"
-              onLoadedData={() => setLoaded(true)}
-              className={`w-full h-full object-cover select-none bg-black transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
-            />
-          )}
+          {/* Main Video */}
+          <video
+            key={directUrl}
+            ref={videoRef}
+            src={directUrl}
+            muted={isMuted}
+            playsInline
+            loop
+            preload="metadata"
+            onLoadedData={() => setLoaded(true)}
+            className={`w-full h-full object-cover select-none bg-black transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+          />
 
           {/* Vignette / Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-black/25 pointer-events-none z-10" />

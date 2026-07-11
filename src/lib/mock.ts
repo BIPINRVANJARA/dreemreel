@@ -90,37 +90,21 @@ export const STATS = [
   { value: 5, suffix: "★", label: "Average rating" },
 ];
 
-export function getEmbedUrl(url: string): string | null {
-  if (!url) return null;
+export function getDirectVideoUrl(url: string): string {
+  if (!url) return "";
 
-  // 1. YouTube
-  if (url.includes("youtube.com") || url.includes("youtu.be")) {
-    let videoId = "";
-    if (url.includes("shorts/")) {
-      videoId = url.split("shorts/")[1]?.split(/[?#]/)[0];
-    } else if (url.includes("watch?v=")) {
-      videoId = url.split("watch?v=")[1]?.split(/[?#]/)[0];
-    } else if (url.includes("youtu.be/")) {
-      videoId = url.split("youtu.be/")[1]?.split(/[?#]/)[0];
-    } else if (url.includes("embed/")) {
-      videoId = url.split("embed/")[1]?.split(/[?#]/)[0];
-    }
-    if (videoId) {
-      return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=1&modestbranding=1&rel=0`;
-    }
+  // 1. Dropbox
+  if (url.includes("dropbox.com")) {
+    return url.replace("dl=0", "raw=1").replace("dl=1", "raw=1");
   }
 
-  // 2. Instagram
-  if (url.includes("instagram.com")) {
-    let shortcode = "";
-    const matches = url.match(/(?:reel|p)\/([^/?#]+)/);
+  // 2. Google Drive
+  if (url.includes("drive.google.com")) {
+    const matches = url.match(/\/d\/([^/]+)/) || url.match(/id=([^&]+)/);
     if (matches && matches[1]) {
-      shortcode = matches[1];
-    }
-    if (shortcode) {
-      return `https://www.instagram.com/reel/${shortcode}/embed/`;
+      return `https://drive.google.com/uc?export=download&id=${matches[1]}`;
     }
   }
 
-  return null;
+  return url;
 }
