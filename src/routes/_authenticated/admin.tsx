@@ -441,14 +441,50 @@ VALUES
     setVideoFile(file);
   };
 
-  // File Upload Helper
-  const uploadToStorage = async (file: File, bucket: "reels" | "thumbnails"): Promise<string> => {
-    const ext = file.name.split(".").pop();
-    const fileName = `${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from(bucket).upload(fileName, file);
-    if (error) throw error;
-    const { data } = supabase.storage.from(bucket).getPublicUrl(fileName);
-    return data.publicUrl;
+  // File Upload Helper (Cloudinary Signed Upload)
+  const uploadToCloudinary = async (file: File): Promise<string> => {
+    const cloudName = "aq0tldut";
+    const apiKey = "179994451972317";
+    const apiSecret = "EL1senqfqEdZbjFEYbDFx9cc1uw";
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const folder = "dreamreel";
+
+    const paramsToSign = {
+      folder: folder,
+      timestamp: timestamp,
+    };
+    
+    const sortedKeys = Object.keys(paramsToSign).sort();
+    const stringToSign = sortedKeys
+      .map(key => `${key}=${paramsToSign[key as keyof typeof paramsToSign]}`)
+      .join("&") + apiSecret;
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(stringToSign);
+    const hashBuffer = await window.crypto.subtle.digest("SHA-1", data);
+    const hashHex = Array.from(new Uint8Array(hashBuffer))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("api_key", apiKey);
+    formData.append("timestamp", timestamp);
+    formData.append("folder", folder);
+    formData.append("signature", hashHex);
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/video/upload`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error?.message || "Failed to upload to Cloudinary.");
+    }
+
+    const resData = await res.json();
+    return resData.secure_url;
   };
 
   // Reel Save Form
@@ -468,7 +504,7 @@ VALUES
       } else {
         // Upload source
         if (videoFile) {
-          finalVideoUrl = await uploadToStorage(videoFile, "reels");
+          finalVideoUrl = await uploadToCloudinary(videoFile);
         } else if (editingReelId) {
           finalVideoUrl = videoUrlInput;
         } else {
