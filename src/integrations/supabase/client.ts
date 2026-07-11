@@ -28,10 +28,22 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 
 
 function createSupabaseClient() {
+  const getEnv = (key: string): string | undefined => {
+    // Check Deno environment (for Netlify Edge Functions)
+    if (typeof (globalThis as any).Deno !== 'undefined' && (globalThis as any).Deno.env) {
+      return (globalThis as any).Deno.env.get(key);
+    }
+    // Check Node environment
+    if (typeof process !== 'undefined' && process.env) {
+      return process.env[key];
+    }
+    return undefined;
+  };
+
   // Use import.meta.env for client-side (Vite build-time replacement)
-  // Fall back to process.env for SSR (server-side rendering)
-  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || (typeof process !== 'undefined' ? process.env.SUPABASE_URL : undefined);
-  const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || (typeof process !== 'undefined' ? process.env.SUPABASE_PUBLISHABLE_KEY : undefined);
+  // Fall back to runtime environment checks for SSR (server-side rendering)
+  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || getEnv('VITE_SUPABASE_URL') || getEnv('SUPABASE_URL');
+  const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || getEnv('VITE_SUPABASE_PUBLISHABLE_KEY') || getEnv('SUPABASE_PUBLISHABLE_KEY');
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
     const missing = [
@@ -41,8 +53,9 @@ function createSupabaseClient() {
     const message = `Missing Supabase environment variable(s): ${missing.join(', ')}.`;
     console.warn(`[Supabase] ${message}`);
     
-    // Return a dummy client during build to prevent compilation crashes
-    if (typeof window === 'undefined' || (typeof process !== 'undefined' && process.env.NODE_ENV === 'production')) {
+    // Return a dummy client only during build/compile time to prevent crashes
+    // If Deno is running, we are executing at runtime, so we should throw a real error
+    if (typeof window === 'undefined' && typeof (globalThis as any).Deno === 'undefined') {
       return createClient<Database>('https://placeholder.supabase.co', 'placeholder-key');
     }
     

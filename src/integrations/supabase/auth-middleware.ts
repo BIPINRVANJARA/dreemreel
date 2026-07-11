@@ -32,9 +32,20 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 
 export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server(
   async ({ next }) => {
-    
-    const SUPABASE_URL = process.env.SUPABASE_URL;
-    const SUPABASE_PUBLISHABLE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY;
+    const getEnv = (key: string): string | undefined => {
+      // Check Deno environment (for Netlify Edge Functions)
+      if (typeof (globalThis as any).Deno !== 'undefined' && (globalThis as any).Deno.env) {
+        return (globalThis as any).Deno.env.get(key);
+      }
+      // Check Node environment
+      if (typeof process !== 'undefined' && process.env) {
+        return process.env[key];
+      }
+      return undefined;
+    };
+
+    const SUPABASE_URL = getEnv('SUPABASE_URL') || getEnv('VITE_SUPABASE_URL');
+    const SUPABASE_PUBLISHABLE_KEY = getEnv('SUPABASE_PUBLISHABLE_KEY') || getEnv('VITE_SUPABASE_PUBLISHABLE_KEY');
 
     if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
       const missing = [
