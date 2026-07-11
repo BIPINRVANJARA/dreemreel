@@ -16,8 +16,6 @@ export function ReelCard({ reel, onOpen, size = "md", autoplay = false }: { reel
   return (
     <button
       onClick={onOpen}
-      onMouseEnter={() => { vRef.current?.play().catch(() => {}); }}
-      onMouseLeave={() => { if (vRef.current) { vRef.current.pause(); vRef.current.currentTime = 0; } }}
       className={`group relative shrink-0 ${w} aspect-[9/16] overflow-hidden rounded-2xl border border-white/5 bg-surface/30 backdrop-blur-md transition hover:-translate-y-1 duration-300 hover:border-primary/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] cursor-pointer`}
     >
       <video 
@@ -27,8 +25,8 @@ export function ReelCard({ reel, onOpen, size = "md", autoplay = false }: { reel
         muted 
         loop 
         playsInline 
-        autoPlay={autoplay}
-        preload="metadata"
+        autoPlay={true}
+        preload="auto"
         onLoadedData={() => setLoaded(true)}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`} 
       />

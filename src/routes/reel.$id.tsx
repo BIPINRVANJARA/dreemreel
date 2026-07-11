@@ -112,7 +112,7 @@ function ReelPage() {
           if (window.history.length > 1) {
             window.history.back();
           } else {
-            nav({ to: "/portfolio" });
+            nav({ to: "/#portfolio" });
           }
         }} 
         className="absolute top-6 left-6 z-30 flex items-center gap-2 text-xs font-semibold text-white/80 hover:text-white bg-white/5 hover:bg-white/10 px-4 py-2.5 rounded-full border border-white/10 backdrop-blur transition"

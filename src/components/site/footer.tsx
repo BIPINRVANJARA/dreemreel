@@ -17,7 +17,7 @@ export function SiteFooter() {
           <p className="label text-primary">Quick links</p>
           <ul className="mt-3 space-y-2 text-sm">
             <li><a href="/#services" className="hover:text-primary">Services</a></li>
-            <li><a href="/portfolio" className="hover:text-primary">Portfolio</a></li>
+            <li><a href="/#portfolio" className="hover:text-primary">Portfolio</a></li>
             <li><a href="/#testimonials" className="hover:text-primary">Testimonials</a></li>
             <li><a href="/#contact" className="hover:text-primary">Contact</a></li>
           </ul>

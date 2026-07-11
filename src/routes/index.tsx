@@ -24,7 +24,7 @@ function Home() {
       <main>
         <Hero />
         <ReelsShowcase />
-        <PortfolioGrid compact />
+        <PortfolioGrid />
         <Services />
         <BeforeAfter />
         <Stats />
