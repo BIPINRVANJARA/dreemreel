@@ -21,6 +21,7 @@ const FALLBACK_THUMBNAILS: Record<string, string> = {
 
 export function ReelsShowcase() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   
   // Drag scroll states
   const [isDragging, setIsDragging] = useState(false);
@@ -32,6 +33,26 @@ export function ReelsShowcase() {
 
   // Active playing index
   const [activeId, setActiveId] = useState<string>("");
+
+  // Auto-mute showcase video when scrolled out of view (e.g. down to portfolio section)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.15) {
+          setIsMuted(true);
+        }
+      },
+      {
+        threshold: [0, 0.15, 0.5],
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Fetch reels from database
   const { data: dbReels } = useQuery({
@@ -125,7 +146,7 @@ export function ReelsShowcase() {
   }, [activeId]);
 
   return (
-    <section id="reels" className="relative py-24 sm:py-32 overflow-hidden bg-[#050507]">
+    <section ref={sectionRef} id="reels" className="relative py-24 sm:py-32 overflow-hidden bg-[#050507]">
       {/* Background glow effects */}
       <div className="pointer-events-none absolute -left-1/4 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-primary/10 blur-[150px] z-0" />
       <div className="pointer-events-none absolute -right-1/4 top-0 h-[450px] w-[450px] rounded-full bg-emerald-500/5 blur-[130px] z-0" />
