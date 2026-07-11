@@ -1,13 +1,10 @@
-import { Play, Clock, X } from "lucide-react";
+import { Play, Clock } from "lucide-react";
 import type { Reel } from "@/lib/mock";
 import { CATEGORY_LABELS } from "@/lib/mock";
 import { useRef, useState, useEffect } from "react";
-import { useReelStore } from "@/lib/reel-store";
 
 export function ReelCard({ reel, onOpen, size = "md", autoplay = false }: { reel: Reel; onOpen: () => void; size?: "md" | "lg"; autoplay?: boolean }) {
   const vRef = useRef<HTMLVideoElement>(null);
-  const store = useReelStore();
-  const isPlayingInline = store.currentId === reel.id;
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -15,32 +12,6 @@ export function ReelCard({ reel, onOpen, size = "md", autoplay = false }: { reel
   }, [reel.video_url]);
 
   const w = size === "lg" ? "w-[280px] sm:w-[320px]" : "w-[220px] sm:w-[260px]";
-
-  if (isPlayingInline) {
-    return (
-      <div className={`relative shrink-0 ${w} aspect-[9/16] overflow-hidden rounded-2xl border border-primary/50 bg-black shadow-2xl z-20`}>
-        <video 
-          key={reel.video_url}
-          src={reel.video_url} 
-          controls 
-          autoPlay 
-          playsInline
-          onLoadedData={() => setLoaded(true)}
-          className={`w-full h-full object-cover bg-black transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`} 
-        />
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            store.close();
-          }}
-          className="absolute top-3 right-3 z-30 bg-black/75 hover:bg-black text-white p-1.5 rounded-full backdrop-blur border border-white/10 shadow-lg cursor-pointer"
-          aria-label="Close Preview"
-        >
-          <X className="h-3.5 w-3.5" />
-        </button>
-      </div>
-    );
-  }
 
   return (
     <button
