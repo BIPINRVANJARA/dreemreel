@@ -4,7 +4,8 @@ import { useReelStore } from "@/lib/reel-store";
 import { ReelCard } from "./reel-card";
 import { Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const CATS: (ReelCategory | "all")[] = [
   "all",
@@ -29,13 +30,19 @@ export function PortfolioGrid({ compact = false }: { compact?: boolean }) {
   const { data: dbReels } = useQuery({
     queryKey: ["reels"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("reels")
-        .select("*")
-        .eq("published", true)
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      return data as Reel[];
+      try {
+        const qSnap = query(
+          collection(db, "reels"),
+          where("published", "==", true)
+        );
+        const snap = await getDocs(qSnap);
+        const docs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Reel[];
+        docs.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+        return docs;
+      } catch (err) {
+        console.error("Failed to fetch reels from Firestore:", err);
+        return [] as Reel[];
+      }
     },
   });
 

@@ -3,20 +3,18 @@ import { useEffect, useRef, useState } from "react";
 import { MOCK_REELS } from "@/lib/mock";
 import { ArrowLeft, Clock, MapPin, Volume2, VolumeX, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import type { Reel } from "@/lib/mock";
 
 export const Route = createFileRoute("/reel/$id")({
   loader: async ({ params }) => {
     // Try database first
     try {
-      const { data, error } = await supabase
-        .from("reels")
-        .select("*")
-        .eq("id", params.id)
-        .single();
-      if (!error && data) {
-        return { reel: data as Reel };
+      const docRef = doc(db, "reels", params.id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { reel: { id: docSnap.id, ...docSnap.data() } as Reel };
       }
     } catch (e) {
       console.error(e);

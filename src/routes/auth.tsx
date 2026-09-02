@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { auth, db } from "@/lib/firebase";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -22,38 +24,48 @@ function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) nav({ to: "/admin", replace: true });
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        nav({ to: "/admin", replace: true });
+      }
     });
+    return () => unsubscribe();
   }, [nav]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
     
-    if (isSignUp) {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      setBusy(false);
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-      if (data.session) {
+    try {
+      if (isSignUp) {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        // Automatically grant admin role to registered user in Firestore
+        await setDoc(doc(db, "user_roles", userCredential.user.uid), {
+          role: "admin",
+          email: userCredential.user.email,
+          created_at: new Date().toISOString()
+        }, { merge: true });
+
         toast.success("Account created! Logged in as admin.");
         nav({ to: "/admin", replace: true });
       } else {
-        toast.success("Registration successful! Check your email or try signing in.");
-        setIsSignUp(false);
+        await signInWithEmailAndPassword(auth, email, password);
+        toast.success("Welcome back.");
+        nav({ to: "/admin", replace: true });
       }
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+    } catch (err: any) {
+      console.error(err);
+      let msg = err.message || "Authentication failed.";
+      if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
+        msg = "Invalid email or password.";
+      } else if (err.code === "auth/email-already-in-use") {
+        msg = "This email is already registered. Please sign in.";
+      } else if (err.code === "auth/weak-password") {
+        msg = "Password should be at least 6 characters.";
+      }
+      toast.error(msg);
+    } finally {
       setBusy(false);
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-      toast.success("Welcome back.");
-      nav({ to: "/admin", replace: true });
     }
   };
 

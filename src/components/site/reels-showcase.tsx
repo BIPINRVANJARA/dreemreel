@@ -2,7 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, VolumeX, Heart, MapPin, Clock, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { MOCK_REELS, type Reel, getDirectVideoUrl } from "@/lib/mock";
 import { useReelStore } from "@/lib/reel-store";
 
@@ -58,13 +59,19 @@ export function ReelsShowcase() {
   const { data: dbReels } = useQuery({
     queryKey: ["reels"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("reels")
-        .select("*")
-        .eq("published", true)
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      return data as Reel[];
+      try {
+        const qSnap = query(
+          collection(db, "reels"),
+          where("published", "==", true)
+        );
+        const snap = await getDocs(qSnap);
+        const docs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Reel[];
+        docs.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+        return docs;
+      } catch (err) {
+        console.error("Failed to fetch showcase reels from Firestore:", err);
+        return [] as Reel[];
+      }
     },
   });
 

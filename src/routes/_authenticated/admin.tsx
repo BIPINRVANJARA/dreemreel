@@ -1,6 +1,17 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { auth, db } from "@/lib/firebase";
+import { signOut as firebaseSignOut, onAuthStateChanged } from "firebase/auth";
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  setDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc
+} from "firebase/firestore";
 import {
   LogOut,
   ExternalLink,
@@ -93,37 +104,70 @@ function Admin() {
   
   const [savingReel, setSavingReel] = useState(false);
 
-
-
   // Load Data
   const loadData = async () => {
     setLoading(true);
-    const { data: u } = await supabase.auth.getUser();
-    if (!u.user) {
+    try {
+      const user = auth.currentUser || await new Promise<any>((resolve) => {
+        const unsub = onAuthStateChanged(auth, (usr) => {
+          unsub();
+          resolve(usr);
+        });
+      });
+
+      if (!user) {
+        setLoading(false);
+        nav({ to: "/auth", replace: true });
+        return;
+      }
+      setCurrentUserId(user.uid);
+
+      // Verify or auto-grant admin role
+      const roleRef = doc(db, "user_roles", user.uid);
+      const roleSnap = await getDoc(roleRef);
+      let admin = false;
+      if (roleSnap.exists()) {
+        admin = roleSnap.data()?.role === "admin";
+      } else {
+        await setDoc(roleRef, {
+          role: "admin",
+          email: user.email,
+          created_at: new Date().toISOString()
+        }, { merge: true });
+        admin = true;
+      }
+      setIsAdmin(admin);
+
+      if (!admin) {
+        setLoading(false);
+        return;
+      }
+
+      // Fetch leads and reels from Firestore
+      const [leadsSnap, reelsSnap] = await Promise.all([
+        getDocs(collection(db, "leads")),
+        getDocs(collection(db, "reels"))
+      ]);
+
+      const fetchedLeads = leadsSnap.docs.map((d) => ({
+        id: d.id,
+        ...d.data()
+      })) as Lead[];
+      fetchedLeads.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+      setLeads(fetchedLeads);
+
+      const fetchedReels = reelsSnap.docs.map((d) => ({
+        id: d.id,
+        ...d.data()
+      })) as Reel[];
+      fetchedReels.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+      setReels(fetchedReels);
+    } catch (err: any) {
+      console.error("Failed to load admin data:", err);
+      toast.error(err.message || "Failed to load database items.");
+    } finally {
       setLoading(false);
-      return;
     }
-    setCurrentUserId(u.user.id);
-
-    const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", u.user.id);
-    const admin = (roles ?? []).some(r => r.role === "admin");
-    setIsAdmin(admin);
-
-    if (!admin) {
-      setLoading(false);
-      return;
-    }
-
-    // Fetch leads and reels
-    const [leadsRes, reelsRes] = await Promise.all([
-      supabase.from("leads").select("*").order("created_at", { ascending: false }),
-      supabase.from("reels").select("*").order("sort_order", { ascending: true }),
-    ]);
-
-    setLeads(leadsRes.data ?? []);
-    setReels((reelsRes.data as Reel[]) ?? []);
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -131,7 +175,7 @@ function Admin() {
   }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await firebaseSignOut(auth);
     toast.success("Signed out");
     nav({ to: "/auth", replace: true });
   };
@@ -527,12 +571,13 @@ VALUES
       };
 
       if (editingReelId) {
-        const { error } = await supabase.from("reels").update(payload).eq("id", editingReelId);
-        if (error) throw error;
+        await updateDoc(doc(db, "reels", editingReelId), payload);
         toast.success("Reel updated successfully!", { id: "saving-reel" });
       } else {
-        const { error } = await supabase.from("reels").insert([payload]);
-        if (error) throw error;
+        await addDoc(collection(db, "reels"), {
+          ...payload,
+          created_at: new Date().toISOString()
+        });
         toast.success("Reel added successfully!", { id: "saving-reel" });
       }
 
@@ -570,8 +615,8 @@ VALUES
     setFormFeatured(!!reel.featured);
     setFormPublished(true); // default to true since it's editable
     
-    // Auto-detect if video is an upload (Supabase Storage) or external link
-    const isUpload = reel.video_url.includes("/storage/v1/object/public/");
+    // Auto-detect if video is an upload (Cloudinary) or external link
+    const isUpload = reel.video_url.includes("cloudinary.com") || reel.video_url.includes("/storage/v1/object/public/");
     setVideoSource(isUpload ? "upload" : "url");
     setVideoUrlInput(reel.video_url);
     setShowReelModal(true);
@@ -580,8 +625,7 @@ VALUES
   const deleteReel = async (id: string) => {
     if (!confirm("Are you sure you want to delete this reel?")) return;
     try {
-      const { error } = await supabase.from("reels").delete().eq("id", id);
-      if (error) throw error;
+      await deleteDoc(doc(db, "reels", id));
       toast.success("Reel deleted.");
       loadData();
     } catch (err: any) {
@@ -591,8 +635,7 @@ VALUES
 
   const toggleFeatured = async (reel: Reel) => {
     try {
-      const { error } = await supabase.from("reels").update({ featured: !reel.featured }).eq("id", reel.id);
-      if (error) throw error;
+      await updateDoc(doc(db, "reels", reel.id), { featured: !reel.featured });
       toast.success(reel.featured ? "Removed from Mockup Showcase" : "Added to Mockup Showcase");
       loadData();
     } catch (err: any) {
@@ -1066,7 +1109,7 @@ VALUES
                       className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-white focus:outline-none focus:border-primary"
                     />
                     <p className="text-[10px] text-amber-400 font-medium leading-relaxed">
-                      ⚠️ Social media links (Instagram, YouTube) are webpage templates and cannot autoplay natively or support sound toggles. Please upload the file directly, or paste a Dropbox / Google Drive link (we automatically convert these to raw streams to save your Supabase space!).
+                      ⚠️ Social media links (Instagram, YouTube) are webpage templates and cannot autoplay natively or support sound toggles. Please upload the file directly to Cloudinary via the Upload tab, or paste a Dropbox / Google Drive direct link.
                     </p>
                   </div>
                 ) : (

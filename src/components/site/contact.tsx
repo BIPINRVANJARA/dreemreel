@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MessageCircle, Phone, Mail, MapPin, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
 import { toast } from "sonner";
 
 export function Contact() {
@@ -11,11 +12,25 @@ export function Contact() {
     e.preventDefault();
     if (!form.name.trim()) { toast.error("Please add your name"); return; }
     setSending(true);
-    const { error } = await supabase.from("leads").insert({ ...form, source: "website", event_date: form.event_date || null });
-    setSending(false);
-    if (error) { toast.error("Couldn't send — try WhatsApp instead"); return; }
-    toast.success("Got it! We'll be in touch shortly.");
-    setForm({ name: "", phone: "", email: "", event_type: "", event_date: "", message: "" });
+    try {
+      await addDoc(collection(db, "leads"), {
+        name: form.name.trim(),
+        phone: form.phone ? form.phone.trim() : null,
+        email: form.email ? form.email.trim() : null,
+        event_type: form.event_type ? form.event_type.trim() : null,
+        event_date: form.event_date || null,
+        message: form.message ? form.message.trim() : null,
+        source: "website",
+        created_at: new Date().toISOString(),
+      });
+      toast.success("Got it! We'll be in touch shortly.");
+      setForm({ name: "", phone: "", email: "", event_type: "", event_date: "", message: "" });
+    } catch (error) {
+      console.error(error);
+      toast.error("Couldn't send — try WhatsApp instead");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
