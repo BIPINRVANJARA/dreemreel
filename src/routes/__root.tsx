@@ -74,7 +74,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Desai Siddhraj — Fashion Creator & Reel Promoter" },
       { property: "og:description", content: "I don't just wear the collection. I make people notice it. High-impact fashion reels, clothing store collaborations, and outfit showcases in Himmatnagar, Gujarat." },
       { property: "og:type", content: "profile" },
+      { property: "og:image", content: "/images/siddhraj-portrait.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "/images/siddhraj-portrait.jpg" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

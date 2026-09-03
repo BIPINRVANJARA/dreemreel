@@ -32,21 +32,16 @@ export function Hero() {
 
   return (
     <section ref={ref} className="relative isolate min-h-dvh w-full overflow-hidden bg-[#050507] flex flex-col justify-between pt-24 sm:pt-28">
-      {/* Background Video with Editorial Tint */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        className="absolute inset-0 h-full w-full object-cover opacity-35 [transform:translate3d(var(--mx,0),var(--my,0),0)_scale(1.05)] transition-transform duration-700 pointer-events-none"
-        src={HERO_VIDEO}
-        poster="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1920&q=75"
+      {/* Siddhraj Hero Image Backdrop */}
+      <img
+        src="/images/siddhraj-hero.jpg"
+        alt="Desai Siddhraj - Fashion Creator"
+        className="absolute inset-0 h-full w-full object-cover object-center opacity-45 [transform:translate3d(var(--mx,0),var(--my,0),0)_scale(1.04)] transition-transform duration-700 pointer-events-none select-none"
       />
 
       {/* Cinematic Vignette Layers */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050507]/90 via-[#050507]/40 to-[#050507] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(5,5,7,0.7)_60%,#050507_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050507]/90 via-[#050507]/50 to-[#050507] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(5,5,7,0.75)_65%,#050507_100%)] pointer-events-none" />
 
       {/* Subtle Glow Accents */}
       <div className="pointer-events-none absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-[140px]" />
