@@ -1,40 +1,59 @@
-import { Instagram, Phone, Mail, MessageCircle } from "lucide-react";
+import { Instagram, Phone, MessageCircle, MapPin } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/60 bg-background">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4">
-        <div className="md:col-span-2">
-          <div className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground font-bold">D</span>
-            <span className="text-lg font-semibold">DreamReel Production</span>
-          </div>
-          <p className="mt-3 max-w-md text-sm text-muted-foreground">
-            Cinematic reels and films for couples, families, brands and events. Based in Khedbrahma, shooting across Gujarat and beyond.
+    <footer className="border-t border-white/10 bg-[#050507]">
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4 text-left">
+        <div className="md:col-span-2 space-y-3">
+          <Link to="/" className="flex items-center gap-2.5">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-white text-black font-black text-xs">DS</span>
+            <span className="text-lg font-black uppercase tracking-tight text-white">DESAI SIDDHRAJ</span>
+          </Link>
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+            Fashion Creator · Reel Promoter · Brand Collaborator
+          </p>
+          <p className="max-w-md text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Collaborating with clothing stores and fashion brands to create high-energy, shareable reels that turn new collections into viral feed moments and store footfall.
           </p>
         </div>
         <div>
-          <p className="label text-primary">Quick links</p>
-          <ul className="mt-3 space-y-2 text-sm">
-            <li><a href="/#services" className="hover:text-primary">Services</a></li>
-            <li><a href="/#portfolio" className="hover:text-primary">Portfolio</a></li>
-            <li><a href="/#testimonials" className="hover:text-primary">Testimonials</a></li>
-            <li><a href="/#contact" className="hover:text-primary">Contact</a></li>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/60">Explore</p>
+          <ul className="mt-3 space-y-2 text-xs font-semibold uppercase tracking-wider">
+            <li><a href="/#reels" className="text-white/70 hover:text-white transition">The Reels</a></li>
+            <li><a href="/#collaborations" className="text-white/70 hover:text-white transition">Collaborations</a></li>
+            <li><a href="/#what-i-create" className="text-white/70 hover:text-white transition">What I Create</a></li>
+            <li><a href="/#about" className="text-white/70 hover:text-white transition">About Siddhraj</a></li>
+            <li><a href="/#contact" className="text-white/70 hover:text-white transition">Start Collaboration</a></li>
           </ul>
         </div>
         <div>
-          <p className="label text-primary">Reach us</p>
-          <ul className="mt-3 space-y-2 text-sm">
-            <li><a href="tel:+917043081426" className="flex items-center gap-2 hover:text-primary"><Phone className="h-4 w-4" />+91 70430 81426</a></li>
-            <li><a href="mailto:oneclickphotography631@gmail.com" className="flex items-center gap-2 hover:text-primary"><Mail className="h-4 w-4" />Email us</a></li>
-            <li><a href="https://wa.me/917043081426" className="flex items-center gap-2 hover:text-primary"><MessageCircle className="h-4 w-4" />WhatsApp</a></li>
-            <li><a href="https://instagram.com" className="flex items-center gap-2 hover:text-primary"><Instagram className="h-4 w-4" />Instagram</a></li>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/60">Connect</p>
+          <ul className="mt-3 space-y-2 text-xs font-semibold">
+            <li>
+              <a href="https://wa.me/919016353934" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/70 hover:text-white transition">
+                <MessageCircle className="h-3.5 w-3.5 text-emerald-400" /> WhatsApp: +91 90163 53934
+              </a>
+            </li>
+            <li>
+              <a href="tel:+919016353934" className="flex items-center gap-2 text-white/70 hover:text-white transition">
+                <Phone className="h-3.5 w-3.5 text-white/70" /> +91 90163 53934
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/desaii_sidhdhraj" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white/70 hover:text-white transition">
+                <Instagram className="h-3.5 w-3.5 text-pink-400" /> @desaii_sidhdhraj
+              </a>
+            </li>
+            <li className="flex items-center gap-2 text-white/50 pt-1">
+              <MapPin className="h-3.5 w-3.5 shrink-0" /> Mehtapura, Himmatnagar, Gujarat
+            </li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-border/60 px-6 py-5 text-center text-xs text-muted-foreground space-y-1">
-        <p>Made by <a href="https://instagram.com/kyvraone" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">IG @kyvraone</a></p>
-        <p>© {new Date().getFullYear()} All rights reserved by kyvraone</p>
+      <div className="border-t border-white/5 px-6 py-5 text-center text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between mx-auto max-w-7xl gap-2">
+        <p>© 2026 Desai Siddhraj. All Rights Reserved.</p>
+        <p className="text-[11px] text-white/40">Fashion Creator & Reel Promoter · Himmatnagar</p>
       </div>
     </footer>
   );

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Play, ArrowRight, ChevronDown } from "lucide-react";
+import { Play, ArrowRight, ChevronDown, Sparkles, MapPin } from "lucide-react";
 import { HERO_VIDEO } from "@/lib/mock";
 import { useEffect, useRef } from "react";
 
@@ -12,100 +12,134 @@ export function Hero() {
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width - 0.5;
       const y = (e.clientY - r.top) / r.height - 0.5;
-      el.style.setProperty("--mx", `${x * 20}px`);
-      el.style.setProperty("--my", `${y * 20}px`);
+      el.style.setProperty("--mx", `${x * 15}px`);
+      el.style.setProperty("--my", `${y * 15}px`);
     };
     el.addEventListener("mousemove", onMove);
     return () => el.removeEventListener("mousemove", onMove);
   }, []);
 
+  const tickerItems = [
+    "WEAR",
+    "STYLE",
+    "SHOOT",
+    "EDIT",
+    "POST",
+    "DISCOVER",
+    "VIRAL REACH",
+    "STORE FOOTFALL",
+  ];
+
   return (
-    <section ref={ref} className="relative isolate min-h-dvh w-full overflow-hidden grain">
-      {/* video bg */}
+    <section ref={ref} className="relative isolate min-h-dvh w-full overflow-hidden bg-[#050507] flex flex-col justify-between pt-24 sm:pt-28">
+      {/* Background Video with Editorial Tint */}
       <video
-        autoPlay muted loop playsInline preload="auto"
-        className="absolute inset-0 h-full w-full object-cover opacity-70 [transform:translate3d(var(--mx,0),var(--my,0),0)_scale(1.06)] transition-transform"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 h-full w-full object-cover opacity-35 [transform:translate3d(var(--mx,0),var(--my,0),0)_scale(1.05)] transition-transform duration-700 pointer-events-none"
         src={HERO_VIDEO}
-        poster="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=70"
+        poster="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1920&q=75"
       />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(5,5,7,0.5)_45%,rgba(5,5,7,0.95)_85%)]" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
-      {/* glow */}
-      <div className="pointer-events-none absolute -left-1/4 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-primary/25 blur-[120px]" />
-      <div className="pointer-events-none absolute right-0 top-0 h-[420px] w-[420px] rounded-full bg-accent-2/20 blur-[120px]" />
 
-      {/* particles */}
-      {Array.from({ length: 24 }).map((_, i) => (
-        <span
-          key={i}
-          className="pointer-events-none absolute rounded-full bg-white/40"
-          style={{
-            width: 2 + (i % 3),
-            height: 2 + (i % 3),
-            left: `${(i * 37) % 100}%`,
-            top: `${(i * 53) % 100}%`,
-            animation: `float${i % 3} ${6 + (i % 5)}s ease-in-out ${i * 0.3}s infinite alternate`,
-          }}
-        />
-      ))}
-      <style>{`
-        @keyframes float0 { to { transform: translateY(-30px) } }
-        @keyframes float1 { to { transform: translate(20px,-25px) } }
-        @keyframes float2 { to { transform: translate(-15px,-35px) } }
-      `}</style>
+      {/* Cinematic Vignette Layers */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050507]/90 via-[#050507]/40 to-[#050507] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(5,5,7,0.7)_60%,#050507_100%)] pointer-events-none" />
 
-      <div className="relative z-10 mx-auto flex min-h-dvh max-w-7xl flex-col justify-center px-6 pt-28 pb-16">
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
+      {/* Subtle Glow Accents */}
+      <div className="pointer-events-none absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/5 blur-[140px]" />
+
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col justify-center px-6 py-12 sm:py-20 text-center items-center">
+        {/* Creator Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="label text-primary"
+          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-white/90 backdrop-blur-md shadow-lg"
         >
-          Reel Creator · Khedbrahma
-        </motion.p>
+          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          DESAI SIDDHRAJ · Fashion Creator & Reel Promoter
+        </motion.div>
+
+        {/* Main Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="mt-6 max-w-4xl text-balance text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl md:text-7xl lg:text-[88px]"
+          className="mt-8 max-w-4xl text-balance text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white leading-[1.05]"
         >
-          Every moment deserves a{" "}
-          <span className="italic text-primary">cinematic</span> story.
+          Your collection deserves <br className="hidden sm:inline" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40 italic font-serif">
+            more than a photo.
+          </span>
         </motion.h1>
+
+        {/* Tagline Statement */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.25 }}
-          className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mt-6 max-w-2xl text-base sm:text-xl font-medium text-white/90 leading-relaxed italic"
         >
-          We craft unforgettable reels that turn memories into masterpieces — pre-wedding, birthdays, brand and beyond.
+          "I don't just wear the collection. I make people notice it."
         </motion.p>
+
+        {/* Subtext description */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mt-3 max-w-xl text-sm sm:text-base text-muted-foreground leading-relaxed"
+        >
+          I create high-energy fashion reels that turn new drops and festive collections into content your audience actually wants to watch, share, and buy.
+        </motion.p>
+
+        {/* CTA Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-9 flex flex-wrap items-center gap-3"
+          className="mt-10 flex flex-wrap items-center justify-center gap-4"
         >
-          <a href="#contact" className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-xl emerald-glow transition hover:scale-[1.02]">
-            Book your shoot
+          <a
+            href="#contact"
+            className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider text-black shadow-[0_0_30px_rgba(255,255,255,0.3)] transition hover:scale-[1.03] hover:bg-white/90"
+          >
+            Collaborate With Me
             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
           </a>
-          <a href="#reels" className="inline-flex items-center gap-2 rounded-full border border-border bg-background/40 px-6 py-3.5 text-sm font-medium backdrop-blur hover:bg-surface">
-            <Play className="h-4 w-4 fill-current" /> View portfolio
+          <a
+            href="#reels"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-7 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:bg-white/10 hover:border-white/30"
+          >
+            <Play className="h-4 w-4 fill-current" /> View Reels
           </a>
         </motion.div>
 
+        {/* Location & Availability footnote */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="absolute inset-x-0 bottom-6 flex justify-center"
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="mt-8 flex items-center gap-2 text-xs font-medium text-white/50"
         >
-          <div className="flex flex-col items-center gap-2 text-muted-foreground">
-            <span className="label text-[10px]">Scroll</span>
-            <ChevronDown className="h-5 w-5 animate-bounce" />
-          </div>
+          <MapPin className="h-3.5 w-3.5 text-white/70" />
+          Based in Mehtapura, Himmatnagar · Available for Store Collaborations
         </motion.div>
+      </div>
+
+      {/* Kinetic Statement Ticker */}
+      <div className="relative z-10 w-full overflow-hidden border-y border-white/10 bg-black/60 backdrop-blur-md py-3.5">
+        <div className="flex w-max animate-marquee space-x-8 whitespace-nowrap text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-white/80">
+          {[...tickerItems, ...tickerItems, ...tickerItems].map((item, idx) => (
+            <span key={idx} className="flex items-center gap-8">
+              <span>{item}</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );

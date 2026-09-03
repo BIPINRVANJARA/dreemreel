@@ -39,7 +39,7 @@ import { toast } from "sonner";
 import { CATEGORY_LABELS, type ReelCategory, type Reel } from "@/lib/mock";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Admin — DreamReel" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin — Desai Siddhraj" }, { name: "robots", content: "noindex" }] }),
   component: Admin,
 });
 
@@ -91,7 +91,10 @@ function Admin() {
   const [showReelModal, setShowReelModal] = useState(false);
   const [editingReelId, setEditingReelId] = useState<string | null>(null);
   const [formTitle, setFormTitle] = useState("");
-  const [formCategory, setFormCategory] = useState<ReelCategory>("birthday");
+  const [formStoreName, setFormStoreName] = useState("");
+  const [formCollectionName, setFormCollectionName] = useState("");
+  const [formViewsCount, setFormViewsCount] = useState("");
+  const [formCategory, setFormCategory] = useState<ReelCategory>("new_collection");
   const [formLocation, setFormLocation] = useState("");
   const [formDuration, setFormDuration] = useState(30);
   const [formFeatured, setFormFeatured] = useState(false);
@@ -561,6 +564,9 @@ VALUES
       const payload = {
         title: formTitle,
         category: formCategory,
+        store_name: formStoreName ? formStoreName.trim() : null,
+        collection_name: formCollectionName ? formCollectionName.trim() : null,
+        views_count: formViewsCount ? formViewsCount.trim() : null,
         location: formLocation || null,
         video_url: finalVideoUrl,
         thumbnail_url: null,
@@ -595,7 +601,10 @@ VALUES
   const resetReelForm = () => {
     setEditingReelId(null);
     setFormTitle("");
-    setFormCategory("birthday");
+    setFormStoreName("");
+    setFormCollectionName("");
+    setFormViewsCount("");
+    setFormCategory("new_collection");
     setFormLocation("");
     setFormDuration(30);
     setFormFeatured(false);
@@ -609,11 +618,14 @@ VALUES
     resetReelForm();
     setEditingReelId(reel.id);
     setFormTitle(reel.title);
+    setFormStoreName(reel.store_name ?? "");
+    setFormCollectionName(reel.collection_name ?? "");
+    setFormViewsCount(reel.views_count ?? "");
     setFormCategory(reel.category);
     setFormLocation(reel.location ?? "");
     setFormDuration(reel.duration_seconds);
     setFormFeatured(!!reel.featured);
-    setFormPublished(true); // default to true since it's editable
+    setFormPublished(true);
     
     // Auto-detect if video is an upload (Cloudinary) or external link
     const isUpload = reel.video_url.includes("cloudinary.com") || reel.video_url.includes("/storage/v1/object/public/");
@@ -710,16 +722,16 @@ VALUES
     <div className="min-h-dvh bg-[#050507] text-white">
       <header className="border-b border-border bg-surface/50 backdrop-blur sticky top-0 z-40">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-4">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <Link
               to="/"
-              className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground font-bold text-lg hover:opacity-90"
+              className="grid h-9 w-9 place-items-center rounded-xl bg-white text-black font-black text-sm hover:opacity-90 transition"
             >
-              D
+              DS
             </Link>
             <div>
-              <p className="text-sm font-semibold text-white">DreamReel Admin</p>
-              <p className="text-xs text-muted-foreground">Manage your portfolio</p>
+              <p className="text-sm font-bold text-white uppercase tracking-tight">Desai Siddhraj Admin</p>
+              <p className="text-[11px] text-muted-foreground">Fashion & Collaborations Dashboard</p>
             </div>
           </div>
 
@@ -1031,11 +1043,11 @@ VALUES
 
             <form onSubmit={saveReel} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-muted-foreground">Title</label>
+                <label className="text-xs font-semibold text-muted-foreground">Title / Reel Headline</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Riya's Sangeet Highlight"
+                  placeholder="e.g. Festive Kurta & Royal Indo-Western Edit"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
@@ -1043,6 +1055,29 @@ VALUES
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-muted-foreground">Store / Brand Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. One Way Fashion Hue"
+                    value={formStoreName}
+                    onChange={(e) => setFormStoreName(e.target.value)}
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-muted-foreground">Collection / Drop Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Festive Drop '26"
+                    value={formCollectionName}
+                    onChange={(e) => setFormCollectionName(e.target.value)}
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-muted-foreground">Category</label>
                   <select
@@ -1064,9 +1099,19 @@ VALUES
                   <label className="text-xs font-semibold text-muted-foreground">Location</label>
                   <input
                     type="text"
-                    placeholder="e.g. Udaipur"
+                    placeholder="e.g. Himmatnagar"
                     value={formLocation}
                     onChange={(e) => setFormLocation(e.target.value)}
+                    className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-muted-foreground">Views Count (Display)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 45.8K"
+                    value={formViewsCount}
+                    onChange={(e) => setFormViewsCount(e.target.value)}
                     className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
                   />
                 </div>

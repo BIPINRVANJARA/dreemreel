@@ -153,27 +153,28 @@ export function ReelsShowcase() {
   }, [activeId]);
 
   return (
-    <section ref={sectionRef} id="reels" className="relative py-24 sm:py-32 overflow-hidden bg-[#050507]">
+    <section ref={sectionRef} id="reels" className="relative py-20 sm:py-28 overflow-hidden bg-[#050507]">
       {/* Background glow effects */}
-      <div className="pointer-events-none absolute -left-1/4 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-primary/10 blur-[150px] z-0" />
-      <div className="pointer-events-none absolute -right-1/4 top-0 h-[450px] w-[450px] rounded-full bg-emerald-500/5 blur-[130px] z-0" />
+      <div className="pointer-events-none absolute -left-1/4 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-white/5 blur-[150px] z-0" />
+      <div className="pointer-events-none absolute -right-1/4 top-0 h-[450px] w-[450px] rounded-full bg-white/5 blur-[130px] z-0" />
 
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <p className="label text-primary">Featured Showcase</p>
-            <h2 className="mt-3 text-balance text-4xl font-semibold tracking-tight sm:text-5xl text-white">
-              Cinematic Reel Showcase
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">THE REELS</p>
+            <h2 className="mt-2 text-balance text-3xl sm:text-5xl font-black tracking-tight text-white uppercase">
+              Fashion isn't just worn. <br className="hidden sm:inline" />
+              <span className="text-white/70 italic font-serif">It's experienced.</span>
             </h2>
-            <p className="mt-3 max-w-xl text-muted-foreground text-sm sm:text-base">
-              Scroll and interact directly with our customized reel showcase. Double-tap to show love, or single-tap to unmute audio.
+            <p className="mt-3 max-w-xl text-muted-foreground text-xs sm:text-sm leading-relaxed">
+              Every drop is styled, shot, and edited to drive customer attention straight to the store. Swipe or tap to explore.
             </p>
           </div>
           <a 
-            href="/#portfolio" 
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/50 backdrop-blur px-5 py-2.5 text-xs font-semibold hover:bg-surface text-white transition self-start md:self-auto"
+            href="#portfolio" 
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 backdrop-blur px-5 py-2.5 text-xs font-bold uppercase tracking-wider hover:bg-white/10 text-white transition self-start md:self-auto"
           >
-            See all projects <ArrowRight className="h-3.5 w-3.5" />
+            Explore All Outfits <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </div>
       </div>
@@ -282,11 +283,7 @@ function ShowcasePhoneCard({
   };
 
   const getCategoryLabel = (cat: string) => {
-    if (cat === "birthday") return "Birthday Shoot";
-    if (cat === "wedding") return "Wedding Shoot";
-    if (cat === "pre_wedding") return "Pre Wedding";
-    if (cat === "bridal") return "Bridal Shoot";
-    return "Cinematic";
+    return (CATEGORY_LABELS as any)[cat] || "Fashion Reel";
   };
 
   return (
@@ -324,7 +321,7 @@ function ShowcasePhoneCard({
           />
 
           {/* Vignette / Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/15 to-black/25 pointer-events-none z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-black/30 pointer-events-none z-10" />
 
           {/* Floating Hearts Container */}
           <AnimatePresence>
@@ -349,7 +346,7 @@ function ShowcasePhoneCard({
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute inset-0 m-auto z-30 h-fit w-fit bg-black/60 backdrop-blur rounded-2xl px-4 py-2 text-xs flex items-center gap-1.5 text-white font-medium border border-white/10"
+                className="absolute inset-0 m-auto z-30 h-fit w-fit bg-black/70 backdrop-blur rounded-2xl px-4 py-2 text-xs flex items-center gap-1.5 text-white font-medium border border-white/10"
               >
                 {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                 {isMuted ? "Audio Muted" : "Audio Playing"}
@@ -357,28 +354,33 @@ function ShowcasePhoneCard({
             )}
           </AnimatePresence>
 
-          {/* UI Badges - Top left (Category) */}
+          {/* UI Badges - Top left (Store or Category) */}
           <div className="absolute top-12 left-4 z-20 pointer-events-none">
-            <span className="rounded-full bg-black/65 backdrop-blur-md px-3 py-1 text-[10px] font-semibold tracking-wider text-white border border-white/10 uppercase">
-              {getCategoryLabel(reel.category)}
+            <span className="rounded-full bg-black/75 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-wider text-white border border-white/15 uppercase">
+              {reel.store_name || getCategoryLabel(reel.category)}
             </span>
           </div>
 
-          {/* UI Badges - Top right (Duration) */}
+          {/* UI Badges - Top right (Views count or Duration) */}
           <div className="absolute top-12 right-4 z-20 pointer-events-none">
-            <span className="rounded-full bg-black/65 backdrop-blur-md px-2.5 py-1 text-[10px] font-bold text-white border border-white/10 flex items-center gap-1">
-              <Clock className="h-3 w-3 text-primary" /> {reel.duration_seconds || 30}s
+            <span className="rounded-full bg-white/10 backdrop-blur-md px-2.5 py-1 text-[10px] font-bold text-white border border-white/10 flex items-center gap-1">
+              {reel.views_count ? `${reel.views_count} views` : `${reel.duration_seconds || 30}s`}
             </span>
           </div>
 
           {/* UI Badges - Bottom Metadata */}
           <div className="absolute bottom-5 inset-x-4 z-20 pointer-events-none text-left space-y-1">
-            <h3 className="text-sm font-semibold text-white tracking-wide">
+            {reel.collection_name && (
+              <p className="text-[10px] font-bold uppercase tracking-wider text-white/60">
+                {reel.collection_name}
+              </p>
+            )}
+            <h3 className="text-sm font-bold text-white tracking-tight leading-snug">
               {reel.title}
             </h3>
-            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-              <MapPin className="h-3 w-3 text-primary shrink-0" />
-              <span>{reel.location}</span>
+            <div className="flex items-center gap-1 text-[10px] text-white/60">
+              <MapPin className="h-3 w-3 text-white/80 shrink-0" />
+              <span>{reel.location || "Himmatnagar"}</span>
             </div>
           </div>
 

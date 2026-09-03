@@ -7,10 +7,10 @@ import { PortfolioGrid } from "@/components/site/portfolio-grid";
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
     meta: [
-      { title: "Portfolio — DreamReel Production" },
-      { name: "description", content: "Cinematic reels, wedding films, brand videos and more from DreamReel Production." },
-      { property: "og:title", content: "Portfolio — DreamReel Production" },
-      { property: "og:description", content: "Every project, one tap away." },
+      { title: "Collection Archive — Desai Siddhraj" },
+      { name: "description", content: "Fashion reels, store collaborations, and outfit showcases by Desai Siddhraj in Himmatnagar, Gujarat." },
+      { property: "og:title", content: "Collection Archive — Desai Siddhraj" },
+      { property: "og:description", content: "Every look. Every drop. One tap away." },
     ],
   }),
   component: PortfolioPage,
@@ -18,12 +18,14 @@ export const Route = createFileRoute("/portfolio")({
 
 function PortfolioPage() {
   return (
-    <div className="min-h-dvh bg-background">
+    <div className="min-h-dvh bg-[#050507] text-white">
       <SiteNav />
       <main className="pt-24">
-        <div className="mx-auto max-w-7xl px-6 pt-8">
-          <p className="label text-primary">Portfolio</p>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-6xl">Our latest work.</h1>
+        <div className="mx-auto max-w-7xl px-6 pt-8 text-left">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">COLLECTION ARCHIVE</p>
+          <h1 className="mt-2 text-3xl sm:text-6xl font-black uppercase tracking-tight text-white">
+            Fashion & Reel Portfolio
+          </h1>
         </div>
         <PortfolioGrid />
       </main>

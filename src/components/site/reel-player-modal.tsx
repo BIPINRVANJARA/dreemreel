@@ -149,18 +149,30 @@ export function ReelPlayerModal() {
 
           {/* Floating Details Footer overlay */}
           <div className="absolute bottom-6 inset-x-5 z-20 text-left pointer-events-none">
+            {currentReel.collection_name && (
+              <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 mb-0.5">
+                {currentReel.collection_name}
+              </p>
+            )}
             <h3 className="text-base sm:text-lg font-bold text-white tracking-wide drop-shadow-md">
               {currentReel.title}
             </h3>
-            <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold text-white/90">
-              {currentReel.location && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur border border-white/5 shadow-sm">
-                  <MapPin className="h-3 w-3 text-primary" /> {currentReel.location}
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold text-white/90">
+              {currentReel.store_name && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-white/15 backdrop-blur border border-white/10 shadow-sm text-white">
+                  {currentReel.store_name}
                 </span>
               )}
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-primary/20 backdrop-blur border border-primary/30 shadow-sm text-primary">
-                {currentReel.category.replace("_", " ").toUpperCase()}
-              </span>
+              {currentReel.location && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur border border-white/5 shadow-sm text-white/80">
+                  <MapPin className="h-3 w-3" /> {currentReel.location}
+                </span>
+              )}
+              {currentReel.views_count && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-black/60 backdrop-blur border border-white/5 shadow-sm text-white/80">
+                  {currentReel.views_count} views
+                </span>
+              )}
             </div>
           </div>
         </motion.div>
