@@ -14,9 +14,9 @@ export function AboutSiddhraj() {
           <div className="lg:col-span-5 flex justify-center">
             <div className="relative w-full max-w-[360px] aspect-[4/5] rounded-3xl border border-white/15 bg-zinc-950 p-2 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden group">
               <img
-                src="/images/siddhraj-portrait.jpg"
+                src="/images/siddhraj-car.jpg"
                 alt="Desai Siddhraj - Fashion Creator"
-                className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-all duration-700"
+                className="w-full h-full object-cover object-top rounded-2xl group-hover:scale-105 transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none rounded-2xl" />
               <div className="absolute bottom-6 inset-x-6 text-left">
