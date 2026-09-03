@@ -1,14 +1,39 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Volume2, VolumeX, Sparkles, MapPin, Instagram, Heart } from "lucide-react";
 import { useRef, useState } from "react";
-import { getDirectVideoUrl } from "@/lib/mock";
+import { useQuery } from "@tanstack/react-query";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { type Reel, getDirectVideoUrl } from "@/lib/mock";
 
 export function FeaturedCollaboration() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [liked, setLiked] = useState(false);
 
-  const sampleVideo = getDirectVideoUrl("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4");
+  const { data: featuredReel } = useQuery({
+    queryKey: ["featured-collab"],
+    queryFn: async () => {
+      try {
+        const snap = await getDocs(
+          query(collection(db, "reels"), where("published", "==", true))
+        );
+        const list = snap.docs.map(d => ({ id: d.id, ...d.data() })) as Reel[];
+        list.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+        return list.find(r => r.featured) || list[0] || null;
+      } catch (err) {
+        console.error("Failed to load featured collaboration reel:", err);
+        return null;
+      }
+    }
+  });
+
+  const videoSrc = featuredReel?.video_url ? getDirectVideoUrl(featuredReel.video_url) : "";
+  const storeName = featuredReel?.store_name || "One Way Fashion Hue";
+  const dropTitle = featuredReel?.title || "Festive Royal Indo-Western Edit '26";
+  const collectionName = featuredReel?.collection_name || "Festive Drop '26";
+  const location = featuredReel?.location || "Himmatnagar";
+  const views = featuredReel?.views_count || "45.8K";
 
   const toggleMute = () => {
     if (videoRef.current) {
@@ -36,15 +61,22 @@ export function FeaturedCollaboration() {
               </div>
 
               {/* Video */}
-              <video
-                ref={videoRef}
-                src={sampleVideo}
-                muted={isMuted}
-                loop
-                autoPlay
-                playsInline
-                className="w-full h-full object-cover select-none"
-              />
+              {videoSrc ? (
+                <video
+                  ref={videoRef}
+                  src={videoSrc}
+                  muted={isMuted}
+                  loop
+                  autoPlay
+                  playsInline
+                  className="w-full h-full object-cover select-none"
+                />
+              ) : (
+                <div className="w-full h-full grid place-items-center bg-zinc-900 text-center p-6">
+                  <p className="text-xs font-bold uppercase tracking-wider text-white/60">Featured Reel Slot</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">Upload a reel with "Featured" in Admin to showcase here.</p>
+                </div>
+              )}
 
               {/* Vignette Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30 pointer-events-none" />
@@ -57,33 +89,35 @@ export function FeaturedCollaboration() {
               </div>
 
               {/* Volume Button */}
-              <button
-                onClick={toggleMute}
-                className="absolute top-12 right-4 z-20 rounded-full bg-black/70 backdrop-blur-md p-2 text-white border border-white/15 hover:bg-black/90 transition cursor-pointer"
-                aria-label="Toggle Sound"
-              >
-                {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-emerald-400" />}
-              </button>
+              {videoSrc && (
+                <button
+                  onClick={toggleMute}
+                  className="absolute top-12 right-4 z-20 rounded-full bg-black/70 backdrop-blur-md p-2 text-white border border-white/15 hover:bg-black/90 transition cursor-pointer"
+                  aria-label="Toggle Sound"
+                >
+                  {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-emerald-400" />}
+                </button>
+              )}
 
               {/* Bottom Card Overlay */}
               <div className="absolute bottom-5 inset-x-4 z-20 text-left space-y-1">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                  One Way Fashion Hue
+                  {storeName}
                 </p>
                 <h4 className="text-sm font-bold text-white leading-tight">
-                  Festive Royal Indo-Western Edit '26
+                  {dropTitle}
                 </h4>
                 <div className="flex items-center justify-between pt-1">
                   <div className="flex items-center gap-1 text-[10px] text-white/70">
                     <MapPin className="h-3 w-3" />
-                    <span>Himmatnagar</span>
+                    <span>{location}</span>
                   </div>
                   <button
                     onClick={() => setLiked(!liked)}
                     className="flex items-center gap-1 text-[10px] font-bold text-white/90 cursor-pointer"
                   >
                     <Heart className={`h-3.5 w-3.5 ${liked ? "fill-red-500 text-red-500" : "text-white"}`} />
-                    <span>{liked ? "45.9K" : "45.8K"}</span>
+                    <span>{liked ? views : views}</span>
                   </button>
                 </div>
               </div>

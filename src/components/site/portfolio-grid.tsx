@@ -91,9 +91,20 @@ export function PortfolioGrid({ compact = false }: { compact?: boolean }) {
             </div>
           ))}
           {displayItems.length === 0 && (
-            <p className="col-span-full py-16 text-center text-sm text-muted-foreground">
-              No reels match — try a different filter.
-            </p>
+            <div className="col-span-full py-16 text-center border border-dashed border-white/10 rounded-3xl bg-zinc-950/60 p-8">
+              <p className="text-sm font-bold uppercase tracking-wider text-white">No Reels In This Category Yet</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Upload your collection reels via the Admin dashboard to show them here.
+              </p>
+              <div className="mt-5">
+                <a
+                  href="/admin"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-white/90 transition"
+                >
+                  Go To Admin →
+                </a>
+              </div>
+            </div>
           )}
         </div>
       </div>

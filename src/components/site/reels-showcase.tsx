@@ -180,27 +180,52 @@ export function ReelsShowcase() {
       </div>
 
       {/* Snap Scroll Wrapper */}
-      <div 
-        ref={scrollRef}
-        onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeave}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        className={`flex w-full overflow-x-auto select-none gap-6 sm:gap-8 px-[12vw] sm:px-[25vw] md:px-[35vw] py-8 scroll-smooth scroll-snap-x-mandatory scrollbar-none relative z-10 ${
-          isDragging ? "cursor-grabbing" : "cursor-grab"
-        }`}
-        style={{ scrollSnapType: "x mandatory" }}
-      >
-        {reels.map((reel) => (
-          <ShowcasePhoneCard
-            key={reel.id}
-            reel={reel}
-            isPlaying={activeId === reel.id}
-            isMuted={isMuted}
-            onMuteToggle={() => setIsMuted(!isMuted)}
-          />
-        ))}
-      </div>
+      {reels.length > 0 ? (
+        <div 
+          ref={scrollRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          className={`flex w-full overflow-x-auto select-none gap-6 sm:gap-8 px-[12vw] sm:px-[25vw] md:px-[35vw] py-8 scroll-smooth scroll-snap-x-mandatory scrollbar-none relative z-10 ${
+            isDragging ? "cursor-grabbing" : "cursor-grab"
+          }`}
+          style={{ scrollSnapType: "x mandatory" }}
+        >
+          {reels.map((reel) => (
+            <ShowcasePhoneCard
+              key={reel.id}
+              reel={reel}
+              isPlaying={activeId === reel.id}
+              isMuted={isMuted}
+              onMuteToggle={() => setIsMuted(!isMuted)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="mx-auto max-w-xl px-6 py-16 text-center border border-dashed border-white/10 rounded-3xl bg-zinc-950/60 relative z-10">
+          <p className="text-sm font-bold uppercase tracking-wider text-white">New Collection Reels Dropping Soon</p>
+          <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+            Connect and upload your first fashion reels directly from the Admin Panel to feature them here.
+          </p>
+          <div className="mt-6 flex justify-center gap-3">
+            <a
+              href="/admin"
+              className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-white/90 transition"
+            >
+              Upload In Admin →
+            </a>
+            <a
+              href="https://www.instagram.com/desaii_sidhdhraj"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/10 transition"
+            >
+              Instagram Feed
+            </a>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
