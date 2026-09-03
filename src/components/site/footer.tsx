@@ -1,4 +1,4 @@
-import { Instagram, Phone, MessageCircle, MapPin } from "lucide-react";
+import { Instagram, Phone, MessageCircle, MapPin, Lock } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
 export function SiteFooter() {
@@ -51,9 +51,30 @@ export function SiteFooter() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/5 px-6 py-5 text-center text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between mx-auto max-w-7xl gap-2">
-        <p>© 2026 Desai Siddhraj. All Rights Reserved.</p>
-        <p className="text-[11px] text-white/40">Fashion Creator & Reel Promoter · Himmatnagar</p>
+      
+      {/* Bottom Footer Section */}
+      <div className="border-t border-white/5 px-6 py-6 text-xs text-muted-foreground">
+        <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-3 text-center sm:text-left">
+            <p>© {new Date().getFullYear()} Desai Siddhraj.</p>
+            <span className="hidden sm:inline text-white/20">•</span>
+            <p>
+              Made by <a href="https://www.instagram.com/kyvraone" target="_blank" rel="noopener noreferrer" className="text-white hover:text-emerald-400 font-semibold transition underline underline-offset-2">IG @kyvraone</a>
+            </p>
+            <span className="hidden sm:inline text-white/20">•</span>
+            <p className="text-white/50">All rights reserved by kyvraone</p>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <span className="text-[11px] text-white/40 hidden lg:inline">Fashion Creator & Reel Promoter · Himmatnagar</span>
+            <Link
+              to="/admin"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20 transition cursor-pointer"
+            >
+              <Lock className="h-3 w-3 text-emerald-400" /> Admin Login
+            </Link>
+          </div>
+        </div>
       </div>
     </footer>
   );
