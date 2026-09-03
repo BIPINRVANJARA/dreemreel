@@ -4,7 +4,7 @@ import { Volume2, VolumeX, Heart, MapPin, Clock, ArrowRight } from "lucide-react
 import { useQuery } from "@tanstack/react-query";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { MOCK_REELS, type Reel, getDirectVideoUrl } from "@/lib/mock";
+import { MOCK_REELS, CATEGORY_LABELS, type Reel, getDirectVideoUrl } from "@/lib/mock";
 import { useReelStore } from "@/lib/reel-store";
 
 const FALLBACK_THUMBNAILS: Record<string, string> = {
