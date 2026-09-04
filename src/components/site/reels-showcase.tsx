@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Volume2, VolumeX, Heart, MapPin, Clock, ArrowRight } from "lucide-react";
+import { Volume2, VolumeX, Heart, MapPin, Clock, ArrowRight, Eye } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -379,46 +379,55 @@ function ShowcasePhoneCard({
             )}
           </AnimatePresence>
 
-          {/* UI Badges - Top left (Store or Category) */}
-          <div className="absolute top-12 left-4 z-20 pointer-events-none">
-            <span className="rounded-full bg-black/75 backdrop-blur-md px-3 py-1 text-[10px] font-bold tracking-wider text-white border border-white/15 uppercase">
-              {reel.store_name || getCategoryLabel(reel.category)}
-            </span>
-          </div>
+          {/* Top Bar - Clean Modern Reels Header (No overlap) */}
+          <div className="absolute top-11 inset-x-3.5 z-20 flex items-center justify-between gap-2 pointer-events-none">
+            {/* Store / Brand Capsule with green live pulse dot */}
+            <div className="flex items-center gap-1.5 min-w-0 max-w-[62%] rounded-full bg-black/75 backdrop-blur-md px-3 py-1.5 border border-white/15 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0 animate-pulse" />
+              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-white truncate">
+                {reel.store_name || getCategoryLabel(reel.category)}
+              </span>
+            </div>
 
-          {/* UI Badges - Top right (Views count or Duration) */}
-          <div className="absolute top-12 right-4 z-20 pointer-events-none">
-            <span className="rounded-full bg-white/10 backdrop-blur-md px-2.5 py-1 text-[10px] font-bold text-white border border-white/10 flex items-center gap-1">
-              {reel.views_count ? `${reel.views_count} views` : `${reel.duration_seconds || 30}s`}
-            </span>
+            {/* Views Count Pill with Eye icon & high contrast */}
+            <div className="shrink-0 flex items-center gap-1.5 rounded-full bg-black/75 backdrop-blur-md px-3 py-1.5 border border-white/15 shadow-[0_4px_12px_rgba(0,0,0,0.5)] text-[10px] sm:text-[11px] font-bold text-white">
+              <Eye className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+              <span className="tracking-wide">{reel.views_count ? `${reel.views_count}` : `${reel.duration_seconds || 30}s`}</span>
+              {reel.views_count && <span className="text-[9px] text-white/60 uppercase font-medium">views</span>}
+            </div>
           </div>
 
           {/* UI Badges - Bottom Metadata */}
-          <div className="absolute bottom-5 inset-x-4 z-20 pointer-events-none text-left space-y-1">
+          <div className="absolute bottom-4 inset-x-3.5 z-20 pointer-events-none text-left bg-gradient-to-t from-black/95 via-black/60 to-transparent p-3.5 rounded-2xl space-y-1">
             {reel.collection_name && (
-              <p className="text-[10px] font-bold uppercase tracking-wider text-white/60">
+              <span className="inline-block text-[10px] font-black uppercase tracking-widest text-emerald-400">
                 {reel.collection_name}
-              </p>
+              </span>
             )}
-            <h3 className="text-sm font-bold text-white tracking-tight leading-snug">
+            <h3 className="text-sm sm:text-base font-bold text-white tracking-tight leading-snug line-clamp-2 drop-shadow-md">
               {reel.title}
             </h3>
-            <div className="flex items-center gap-1 text-[10px] text-white/60">
-              <MapPin className="h-3 w-3 text-white/80 shrink-0" />
-              <span>{reel.location || "Himmatnagar"}</span>
+            <div className="flex items-center justify-between pt-0.5 text-[10px] text-white/70">
+              <div className="flex items-center gap-1 font-medium">
+                <MapPin className="h-3 w-3 text-emerald-400 shrink-0" />
+                <span>{reel.location || "Himmatnagar, Gujarat"}</span>
+              </div>
+              <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/10 text-white/90 border border-white/10">
+                {getCategoryLabel(reel.category)}
+              </span>
             </div>
           </div>
 
           {/* Volume overlay indicator showing only on hover */}
-          <div className="absolute right-4 bottom-5 z-20">
+          <div className="absolute right-4 bottom-24 z-20">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onMuteToggle();
               }}
-              className="bg-black/60 hover:bg-black/80 text-white p-2 rounded-full border border-white/10 backdrop-blur shadow opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center"
+              className="bg-black/70 hover:bg-black/90 text-white p-2.5 rounded-full border border-white/15 backdrop-blur shadow-lg opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center"
             >
-              {isMuted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
+              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-emerald-400" />}
             </button>
           </div>
 

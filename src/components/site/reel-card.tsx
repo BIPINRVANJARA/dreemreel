@@ -1,4 +1,4 @@
-import { Play, Clock } from "lucide-react";
+import { Play, Clock, Eye, MapPin } from "lucide-react";
 import type { Reel } from "@/lib/mock";
 import { CATEGORY_LABELS, getDirectVideoUrl } from "@/lib/mock";
 import { useRef, useState, useEffect } from "react";
@@ -37,24 +37,31 @@ export function ReelCard({ reel, onOpen, size = "md", autoplay = false }: { reel
       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-black/30 transition-opacity duration-300 group-hover:from-black group-hover:via-black/40" />
       
       {/* Top Badges */}
-      <div className="absolute inset-x-3 top-3 flex items-center justify-between z-10">
-        <span className="rounded-full bg-black/75 backdrop-blur-md px-2.5 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-white border border-white/10">
-          {reel.store_name || CATEGORY_LABELS[reel.category] || "Look"}
-        </span>
-        <span className="inline-flex items-center gap-1 rounded-full bg-white/10 backdrop-blur-md px-2 py-0.5 text-[9px] sm:text-[10px] font-bold text-white/90 border border-white/10">
-          {reel.views_count ? `${reel.views_count}` : `${reel.duration_seconds || 30}s`}
-        </span>
+      <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2 z-10">
+        <div className="flex items-center gap-1.5 min-w-0 max-w-[62%] rounded-full bg-black/75 backdrop-blur-md px-2.5 py-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-white border border-white/15 shadow-sm">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shrink-0" />
+          <span className="truncate">{reel.store_name || CATEGORY_LABELS[reel.category] || "Promo"}</span>
+        </div>
+        <div className="shrink-0 inline-flex items-center gap-1 rounded-full bg-black/75 backdrop-blur-md px-2.5 py-1 text-[9px] sm:text-[10px] font-bold text-white border border-white/15 shadow-sm">
+          <Eye className="h-3 w-3 text-emerald-400 shrink-0" />
+          <span>{reel.views_count ? `${reel.views_count}` : `${reel.duration_seconds || 30}s`}</span>
+        </div>
       </div>
 
       {/* Bottom Content */}
-      <div className="absolute inset-x-3 bottom-3 z-10">
+      <div className="absolute inset-x-3 bottom-3 z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-2.5 rounded-xl space-y-0.5">
         {reel.collection_name && (
-          <p className="text-[10px] font-bold uppercase tracking-wider text-white/60 mb-0.5">
+          <span className="inline-block text-[9px] font-black uppercase tracking-widest text-emerald-400">
             {reel.collection_name}
-          </p>
+          </span>
         )}
-        <p className="text-xs sm:text-sm font-bold leading-tight text-white tracking-tight">{reel.title}</p>
-        {reel.location && <p className="mt-1 text-[10px] font-medium text-white/50">{reel.location}</p>}
+        <p className="text-xs sm:text-sm font-bold leading-tight text-white tracking-tight line-clamp-2">{reel.title}</p>
+        <div className="flex items-center justify-between pt-0.5 text-[9px] text-white/60">
+          <span>{reel.location || "Himmatnagar"}</span>
+          <span className="text-[8px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-white/10 text-white/80">
+            {CATEGORY_LABELS[reel.category]}
+          </span>
+        </div>
       </div>
 
       {/* Center Play Button Overlay */}
