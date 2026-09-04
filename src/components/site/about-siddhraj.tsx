@@ -10,52 +10,62 @@ export function AboutSiddhraj() {
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Samsung Galaxy S26 Ultra Flagship Mockup Frame */}
+          {/* Editorial Creator Showcase Portrait */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-[320px] sm:max-w-[340px] aspect-[9/18.5] rounded-[20px] border-[7px] border-zinc-800/90 bg-zinc-950 p-[1px] ring-1 ring-white/20 shadow-[0_25px_65px_rgba(0,0,0,0.9)] overflow-hidden group">
+            <div className="relative w-full max-w-[360px] sm:max-w-[380px] aspect-[4/5] rounded-[32px] p-2 bg-gradient-to-b from-white/15 via-white/5 to-white/10 border border-white/20 shadow-[0_25px_65px_rgba(0,0,0,0.85)] group">
               
-              {/* Samsung Infinity-O Top Center Punch Hole Camera */}
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-black border border-zinc-700/80 z-30 shadow-inner flex items-center justify-center pointer-events-none">
-                <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 ring-1 ring-blue-500/20" />
-              </div>
+              {/* Ambient Glow Backlight */}
+              <div className="absolute -inset-2 rounded-[36px] bg-gradient-to-tr from-emerald-500/20 via-white/10 to-transparent blur-xl opacity-40 group-hover:opacity-80 transition duration-700 pointer-events-none" />
 
-              {/* Antenna lines / Titanium side bands accent */}
-              <div className="absolute top-16 -left-[7px] w-1 h-3 bg-zinc-700/60 rounded-r" />
-              <div className="absolute top-28 -right-[7px] w-1 h-6 bg-zinc-700/60 rounded-l" />
-              <div className="absolute top-38 -right-[7px] w-1 h-10 bg-zinc-700/60 rounded-l" />
-
-              {/* Screen Container */}
-              <div className="relative w-full h-full rounded-[14px] overflow-hidden bg-zinc-900">
+              {/* Image Inner Container */}
+              <div className="relative w-full h-full rounded-[24px] overflow-hidden bg-zinc-950">
                 <img
                   src="/images/siddhraj-portrait.jpg"
-                  alt="Desai Siddhraj - Brand Promoter"
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-all duration-700 select-none"
+                  alt="Desai Siddhraj - Brand Promoter & Commercial Creator"
+                  className="w-full h-full object-cover object-[center_12%] group-hover:scale-105 transition-all duration-700 select-none"
                 />
                 
-                {/* Subtle Cinematic Vignette */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+                {/* Cinematic Vignette */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-none" />
 
-                {/* Top Status Tag */}
-                <div className="absolute top-8 left-3.5 z-20 pointer-events-none">
-                  <span className="rounded-full bg-black/70 backdrop-blur-md px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white/90 border border-white/15">
-                    Official Creator
+                {/* Top Badges */}
+                <div className="absolute top-3.5 inset-x-3.5 flex items-center justify-between z-20 pointer-events-none">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-black/75 backdrop-blur-md px-3 py-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-white border border-white/20 shadow-md">
+                    <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                    Verified Creator
                   </span>
+                  
+                  <a
+                    href="https://www.instagram.com/desaii_sidhdhraj"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-black/75 backdrop-blur-md px-3 py-1.5 text-[10px] sm:text-[11px] font-bold text-white hover:text-pink-400 border border-white/20 shadow-md transition"
+                  >
+                    <Instagram className="h-3.5 w-3.5 text-pink-400" />
+                    @desaii_sidhdhraj
+                  </a>
                 </div>
 
                 {/* Bottom Profile Details Glass Card */}
-                <div className="absolute bottom-4 inset-x-3 text-left bg-black/80 backdrop-blur-md p-3.5 rounded-xl border border-white/10 shadow-lg z-20">
-                  <div className="flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400">
-                      Desai Siddhraj
+                <div className="absolute bottom-3 inset-x-3 text-left bg-black/85 backdrop-blur-md p-4 rounded-[20px] border border-white/15 shadow-2xl z-20 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[11px] font-black uppercase tracking-widest text-emerald-400">
+                      DESAI SIDDHRAJ
                     </p>
+                    <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/10 text-white/90 border border-white/15">
+                      Himmatnagar
+                    </span>
                   </div>
-                  <p className="text-xs sm:text-sm font-bold text-white mt-0.5 tracking-tight">
-                    Brand Promoter & Commercial Creator
+                  <p className="text-sm font-bold text-white tracking-tight leading-snug">
+                    Brand Promoter & Commercial Reel Creator
                   </p>
-                  <p className="text-[10px] text-white/70 flex items-center gap-1 mt-1">
-                    <MapPin className="h-3 w-3 text-emerald-400 shrink-0" /> Mehtapura, Himmatnagar
-                  </p>
+                  <div className="flex items-center gap-2 pt-1 text-[10px] text-white/70 font-medium">
+                    <span className="flex items-center gap-1">
+                      <MapPin className="h-3 w-3 text-emerald-400" /> Gujarat
+                    </span>
+                    <span>•</span>
+                    <span className="text-white/80">Available for Store Promotions</span>
+                  </div>
                 </div>
               </div>
             </div>
