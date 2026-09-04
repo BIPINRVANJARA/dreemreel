@@ -7,10 +7,10 @@ import { PortfolioGrid } from "@/components/site/portfolio-grid";
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
     meta: [
-      { title: "Collection Archive — Desai Siddhraj" },
-      { name: "description", content: "Fashion reels, store collaborations, and outfit showcases by Desai Siddhraj in Himmatnagar, Gujarat." },
-      { property: "og:title", content: "Collection Archive — Desai Siddhraj" },
-      { property: "og:description", content: "Every look. Every drop. One tap away." },
+      { title: "Store & Brand Promotions — Desai Siddhraj" },
+      { name: "description", content: "Commercial reels, store grand openings, cafe showcases, and business promotional campaigns by Desai Siddhraj across Gujarat." },
+      { property: "og:title", content: "Store & Brand Promotions — Desai Siddhraj" },
+      { property: "og:description", content: "Every store. Every campaign. One tap away." },
     ],
   }),
   component: PortfolioPage,
@@ -22,9 +22,9 @@ function PortfolioPage() {
       <SiteNav />
       <main className="pt-24">
         <div className="mx-auto max-w-7xl px-6 pt-8 text-left">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">COLLECTION ARCHIVE</p>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">COMMERCIAL PORTFOLIO</p>
           <h1 className="mt-2 text-3xl sm:text-6xl font-black uppercase tracking-tight text-white">
-            Fashion & Reel Portfolio
+            Store & Brand Promotions
           </h1>
         </div>
         <PortfolioGrid />

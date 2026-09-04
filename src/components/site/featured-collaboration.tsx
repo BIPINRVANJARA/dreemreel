@@ -127,27 +127,27 @@ export function FeaturedCollaboration() {
           {/* Right Editorial Story & Breakdown */}
           <div className="lg:col-span-7 space-y-6 order-1 lg:order-2 text-left">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-bold uppercase tracking-widest text-white/80">
-              <Sparkles className="h-3.5 w-3.5 text-white" />
-              SPOTLIGHT COLLABORATION
+              <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
+              SPOTLIGHT CAMPAIGN
             </div>
 
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-[1.05]">
-              ONE LOOK. <br />
-              <span className="text-white/70 italic font-serif">ONE REEL. ONE STORY.</span>
+              ONE STORE. <br />
+              <span className="text-white/70 italic font-serif">ONE REEL. REAL RESULTS.</span>
             </h2>
 
             <div className="space-y-4 pt-2">
               <div className="border-l-2 border-white/20 pl-4 py-1">
                 <h3 className="text-xl font-bold text-white tracking-tight">
-                  One Way Fashion Hue
+                  {storeName}
                 </h3>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mt-0.5">
-                  Men's Fashion & Festive Wear · Himmatnagar
+                  Commercial Campaign · {location}
                 </p>
               </div>
 
               <p className="text-sm sm:text-base text-white/80 leading-relaxed max-w-xl">
-                From selecting the outfit combinations to executing dynamic cinematic transitions, every detail is engineered to make the collection stand out and drive real foot-traffic to the store.
+                From scripting the hook to executing cinematic on-site video production, every detail is engineered to make your store stand out and drive real customers through your doors.
               </p>
             </div>
 
@@ -155,15 +155,15 @@ export function FeaturedCollaboration() {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-white/10 max-w-xl">
               <div className="rounded-xl border border-white/10 bg-white/5 p-3.5">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-white/60">Campaign</p>
-                <p className="text-sm font-bold text-white mt-1">Festive Drop '26</p>
+                <p className="text-sm font-bold text-white mt-1">{collectionName}</p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-3.5">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-white/60">Format</p>
-                <p className="text-sm font-bold text-white mt-1">4K Styled Reel</p>
+                <p className="text-sm font-bold text-white mt-1">4K Promo Reel</p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/5 p-3.5 col-span-2 sm:col-span-1">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-white/60">Organic Reach</p>
-                <p className="text-sm font-bold text-white mt-1">45K+ Local Views</p>
+                <p className="text-sm font-bold text-white mt-1">{views} Local Views</p>
               </div>
             </div>
 
@@ -173,7 +173,7 @@ export function FeaturedCollaboration() {
                 href="#contact"
                 className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-black shadow-lg transition hover:scale-[1.02] hover:bg-white/90"
               >
-                Collaborate With Me <ArrowRight className="h-4 w-4" />
+                Book A Promotion <ArrowRight className="h-4 w-4" />
               </a>
               <a
                 href="https://www.instagram.com/desaii_sidhdhraj"

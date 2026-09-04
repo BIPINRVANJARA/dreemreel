@@ -6,12 +6,12 @@ export function Process() {
     <section className="relative py-20 sm:py-32 bg-[#050507]">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-2xl text-left">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">COLLABORATION WORKFLOW</p>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">PROMOTION WORKFLOW</p>
           <h2 className="mt-2 text-3xl sm:text-5xl font-black uppercase tracking-tight text-white">
-            FROM COLLECTION TO REEL
+            FROM BRIEF TO BUZZ
           </h2>
           <p className="mt-3 text-muted-foreground text-xs sm:text-sm leading-relaxed">
-            A seamless 6-step process designed to take your clothing drop from the shop rack directly into high-converting Instagram reels.
+            A streamlined 6-step process designed to take your store, showroom, or brand campaign from initial brief to viral local customer footfall.
           </p>
         </div>
         <div className="mt-12 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">

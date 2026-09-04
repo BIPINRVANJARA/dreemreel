@@ -1,11 +1,13 @@
 import { SERVICES } from "@/lib/mock";
 import { motion } from "framer-motion";
-import { Plus, Minus, ArrowRight, Shirt, Film, Sparkles, Flame, Smartphone, Handshake, Check } from "lucide-react";
+import { Plus, Minus, ArrowRight, Shirt, Film, Sparkles, Flame, Smartphone, Handshake, Check, Rocket, Coffee } from "lucide-react";
 import { useState } from "react";
 
 function getServiceIcon(icon: string) {
   switch (icon) {
+    case "rocket": return <Rocket className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300" />;
     case "shirt": return <Shirt className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300" />;
+    case "coffee": return <Coffee className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300" />;
     case "film": return <Film className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300" />;
     case "sparkles": return <Sparkles className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300" />;
     case "flame": return <Flame className="h-5 w-5 text-white group-hover:scale-110 transition-transform duration-300" />;
@@ -24,12 +26,12 @@ export function Services() {
       
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         <div className="max-w-2xl text-left">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">SERVICES & PACKAGES</p>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">PROMOTION SERVICES</p>
           <h2 className="mt-2 text-3xl sm:text-5xl font-black uppercase tracking-tight text-white">
-            WHAT I CREATE
+            WHAT I PROMOTE
           </h2>
           <p className="mt-3 text-muted-foreground text-xs sm:text-sm leading-relaxed">
-            Content formats designed specifically to help clothing stores, boutique brands, and fashion retailers turn new collections into viral feed moments.
+            Tailored promotional video packages designed to put retail shops, cafes, showrooms, and local brands directly on the feeds of active local shoppers.
           </p>
         </div>
         

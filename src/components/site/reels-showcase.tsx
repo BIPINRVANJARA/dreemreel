@@ -161,20 +161,20 @@ export function ReelsShowcase() {
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">THE REELS</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">THE PROMOTIONS</p>
             <h2 className="mt-2 text-balance text-3xl sm:text-5xl font-black tracking-tight text-white uppercase">
-              Fashion isn't just worn. <br className="hidden sm:inline" />
-              <span className="text-white/70 italic font-serif">It's experienced.</span>
+              Promotions that convert <br className="hidden sm:inline" />
+              <span className="text-white/70 italic font-serif">viewers into customers.</span>
             </h2>
             <p className="mt-3 max-w-xl text-muted-foreground text-xs sm:text-sm leading-relaxed">
-              Every drop is styled, shot, and edited to drive customer attention straight to the store. Swipe or tap to explore.
+              Every promotional reel is scripted, filmed, and edited with sharp visual hooks that drive customer curiosity and store footfall.
             </p>
           </div>
           <a 
             href="#portfolio" 
             className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 backdrop-blur px-5 py-2.5 text-xs font-bold uppercase tracking-wider hover:bg-white/10 text-white transition self-start md:self-auto"
           >
-            Explore All Outfits <ArrowRight className="h-3.5 w-3.5" />
+            Explore All Promos <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </div>
       </div>

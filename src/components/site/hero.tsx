@@ -20,14 +20,14 @@ export function Hero() {
   }, []);
 
   const tickerItems = [
-    "WEAR",
-    "STYLE",
-    "SHOOT",
-    "EDIT",
-    "POST",
-    "DISCOVER",
-    "VIRAL REACH",
-    "STORE FOOTFALL",
+    "VISIT STORE",
+    "CAPTURE PRODUCTS",
+    "SCRIPT THE HOOK",
+    "CINEMATIC 4K EDIT",
+    "VIRAL PROMOTION",
+    "LOCAL GUJARAT REACH",
+    "MORE CUSTOMER FOOTFALL",
+    "BOOST STORE SALES",
   ];
 
   return (
@@ -35,7 +35,7 @@ export function Hero() {
       {/* Siddhraj Hero Image Backdrop */}
       <img
         src="/images/siddhraj-hero.jpg"
-        alt="Desai Siddhraj - Fashion Creator"
+        alt="Desai Siddhraj - Brand Promoter"
         className="absolute inset-0 h-full w-full object-cover object-center opacity-45 [transform:translate3d(var(--mx,0),var(--my,0),0)_scale(1.04)] transition-transform duration-700 pointer-events-none select-none"
       />
 
@@ -55,7 +55,7 @@ export function Hero() {
           className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-white/90 backdrop-blur-md shadow-lg"
         >
           <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-          DESAI SIDDHRAJ · Fashion Creator & Reel Promoter
+          DESAI SIDDHRAJ · Paid Promotions & Store Commercials
         </motion.div>
 
         {/* Main Headline */}
@@ -65,9 +65,9 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="mt-8 max-w-4xl text-balance text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white leading-[1.05]"
         >
-          Your collection deserves <br className="hidden sm:inline" />
+          Your brand deserves <br className="hidden sm:inline" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40 italic font-serif">
-            more than a photo.
+            more than a flyer.
           </span>
         </motion.h1>
 
@@ -78,7 +78,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mt-6 max-w-2xl text-base sm:text-xl font-medium text-white/90 leading-relaxed italic"
         >
-          "I don't just wear the collection. I make people notice it."
+          "I don't just promote your business. I make people want to visit it."
         </motion.p>
 
         {/* Subtext description */}
@@ -88,7 +88,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="mt-3 max-w-xl text-sm sm:text-base text-muted-foreground leading-relaxed"
         >
-          I create high-energy fashion reels that turn new drops and festive collections into content your audience actually wants to watch, share, and buy.
+          I create high-converting promotional reels for retail shops, cafes, showrooms, gyms, and brands across Gujarat that turn viewers into paying customers.
         </motion.p>
 
         {/* CTA Actions */}
@@ -102,14 +102,14 @@ export function Hero() {
             href="#contact"
             className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider text-black shadow-[0_0_30px_rgba(255,255,255,0.3)] transition hover:scale-[1.03] hover:bg-white/90"
           >
-            Collaborate With Me
+            Book Paid Promotion
             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
           </a>
           <a
             href="#reels"
             className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-7 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider text-white backdrop-blur-md transition hover:bg-white/10 hover:border-white/30"
           >
-            <Play className="h-4 w-4 fill-current" /> View Reels
+            <Play className="h-4 w-4 fill-current" /> View Promo Reels
           </a>
         </motion.div>
 
@@ -120,18 +120,18 @@ export function Hero() {
           transition={{ delay: 0.6, duration: 0.8 }}
           className="mt-8 flex items-center gap-2 text-xs font-medium text-white/50"
         >
-          <MapPin className="h-3.5 w-3.5 text-white/70" />
-          Based in Mehtapura, Himmatnagar · Available for Store Collaborations
+          <MapPin className="h-3.5 w-3.5 text-emerald-400" />
+          Based in Mehtapura, Himmatnagar · Available for Commercial & Store Promotions Across Gujarat
         </motion.div>
       </div>
 
       {/* Kinetic Statement Ticker */}
       <div className="relative z-10 w-full overflow-hidden border-y border-white/10 bg-black/60 backdrop-blur-md py-3.5">
         <div className="flex w-max animate-marquee space-x-8 whitespace-nowrap text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-white/80">
-          {[...tickerItems, ...tickerItems, ...tickerItems].map((item, idx) => (
+          {tickerItems.concat(tickerItems).map((item, idx) => (
             <span key={idx} className="flex items-center gap-8">
               <span>{item}</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+              <span className="text-emerald-400">✦</span>
             </span>
           ))}
         </div>

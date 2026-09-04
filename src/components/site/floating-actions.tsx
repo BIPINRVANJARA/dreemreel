@@ -12,7 +12,7 @@ export function FloatingActions() {
   return (
     <div className="fixed bottom-4 right-4 z-30 flex flex-col items-end gap-2.5">
       <a
-        href="https://wa.me/919016353934?text=Hi%20Siddhraj%2C%20I'd%20love%20to%20collaborate%20for%20a%20clothing%20collection%20drop."
+        href="https://wa.me/919016353934?text=Hi%20Siddhraj%2C%20I'd%20love%20to%20book%20a%20paid%20promotion%20for%20my%20business."
         aria-label="WhatsApp"
         target="_blank"
         rel="noopener noreferrer"

@@ -9,7 +9,7 @@ export function Contact() {
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    event_type: "New Collection Drop",
+    event_type: "Store Grand Opening & Launch",
     event_date: "",
     message: ""
   });
@@ -26,11 +26,11 @@ export function Contact() {
         event_type: form.event_type,
         event_date: form.event_date || null,
         message: form.message ? form.message.trim() : null,
-        source: "website_collaboration",
+        source: "website_promotion_inquiry",
         created_at: new Date().toISOString(),
       });
-      toast.success("Collaboration request sent! Siddhraj will connect on WhatsApp shortly.");
-      setForm({ name: "", phone: "", event_type: "New Collection Drop", event_date: "", message: "" });
+      toast.success("Promotion request sent! Siddhraj will connect on WhatsApp shortly.");
+      setForm({ name: "", phone: "", event_type: "Store Grand Opening & Launch", event_date: "", message: "" });
     } catch (error) {
       console.error(error);
       toast.error("Couldn't send — please tap the WhatsApp button directly!");
@@ -45,18 +45,18 @@ export function Contact() {
       
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">START A COLLABORATION</p>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">BOOK A PAID PROMOTION</p>
           <h2 className="mt-3 text-balance text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-white leading-tight">
-            LET'S PUT YOUR COLLECTION <br className="hidden sm:inline" />
+            LET'S PUT YOUR BUSINESS <br className="hidden sm:inline" />
             <span className="text-white/70 italic font-serif">ON THE FEED.</span>
           </h2>
           <p className="mt-4 text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Planning a new collection? Launching a festive drop? Looking for someone to wear, style, and showcase your clothing? Let's collaborate.
+            Opening a new store? Launching a new drop, menu, or discount campaign? Need an on-camera creator to showcase your business? Let's collaborate.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a
-              href="https://wa.me/919016353934?text=Hi%20Siddhraj%2C%20I'd%20love%20to%20collaborate%20with%20you%20for%20my%20clothing%20store."
+              href="https://wa.me/919016353934?text=Hi%20Siddhraj%2C%20I'd%20love%20to%20book%20a%20paid%20promotion%20for%20my%20business."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-white/90 transition"
@@ -78,7 +78,7 @@ export function Contact() {
               <Instagram className="h-4 w-4" /> @desaii_sidhdhraj
             </a>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-xs font-semibold text-white/70">
-              <MapPin className="h-4 w-4 text-white" /> Mehtapura, Himmatnagar
+              <MapPin className="h-4 w-4 text-emerald-400" /> Mehtapura, Himmatnagar
             </span>
           </div>
         </div>
@@ -86,11 +86,11 @@ export function Contact() {
         <form onSubmit={onSubmit} className="mx-auto mt-14 grid max-w-2xl gap-5 rounded-3xl border border-white/10 bg-zinc-950/80 backdrop-blur-2xl p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.7)] text-left">
           <div className="grid gap-5 sm:grid-cols-2">
             <Input
-              label="Your Name / Store Name"
+              label="Your Name / Store / Business Name"
               value={form.name}
               onChange={v => setForm({ ...form, name: v })}
               required
-              placeholder="e.g. One Way Fashion / Siddharth"
+              placeholder="e.g. Royal Cafe / Shreeji Store"
             />
             <Input
               label="WhatsApp Number"
@@ -104,25 +104,28 @@ export function Contact() {
           <div className="grid gap-5 sm:grid-cols-2">
             <label className="grid gap-2 text-left">
               <span className="text-xs font-bold uppercase tracking-wider text-white/70">
-                What do you want to promote?
+                What type of business are you promoting?
               </span>
               <select
                 value={form.event_type}
                 onChange={e => setForm({ ...form, event_type: e.target.value })}
                 className="w-full rounded-xl border border-white/10 bg-zinc-900/90 px-4 py-3 text-xs font-medium text-white focus:border-white/30 focus:ring-1 focus:ring-white/20 focus:outline-none transition"
               >
-                <option value="New Collection Drop">New Collection Drop</option>
-                <option value="Men's Wear & Casuals">Men's Wear & Casuals</option>
-                <option value="Festive & Royal Collection">Festive & Royal Collection (Diwali / Navratri)</option>
-                <option value="Streetwear & Oversized Drops">Streetwear & Oversized Drops</option>
-                <option value="Store Grand Opening / Promo">Store Grand Opening / Brand Promo</option>
-                <option value="Long-term Monthly Ambassador">Long-term Monthly Ambassador</option>
-                <option value="Other">Other Promotion</option>
+                <option value="Store Grand Opening & Launch">Store Grand Opening & Launch</option>
+                <option value="Clothing & Fashion Store Drop">Clothing & Fashion Store Drop</option>
+                <option value="Cafe, Restaurant & Food Promo">Cafe, Restaurant & Food Promo</option>
+                <option value="Mobiles, Electronics & Gadgets">Mobiles, Electronics & Gadgets</option>
+                <option value="Jewellery & Luxury Goods">Jewellery & Luxury Goods</option>
+                <option value="Gym, Fitness & Wellness Club">Gym, Fitness & Wellness Club</option>
+                <option value="Cars & Showrooms Promo">Cars & Showrooms Promo</option>
+                <option value="Special Festival Discount Campaign">Special Festival Discount Campaign</option>
+                <option value="Monthly Brand Ambassador">Monthly Brand Ambassador</option>
+                <option value="Other Business Promotion">Other Business Promotion</option>
               </select>
             </label>
 
             <Input
-              label="Preferred Shoot / Drop Date"
+              label="Preferred Promotion / Shoot Date"
               value={form.event_date}
               onChange={v => setForm({ ...form, event_date: v })}
               type="date"
@@ -131,13 +134,13 @@ export function Contact() {
 
           <label className="grid gap-2 text-left">
             <span className="text-xs font-bold uppercase tracking-wider text-white/70">
-              Tell me about your collection
+              Tell me about your promotion & offers
             </span>
             <textarea
               rows={4}
               value={form.message}
               onChange={e => setForm({ ...form, message: e.target.value })}
-              placeholder="Tell me about the styles, color palettes, pieces to highlight, or any specific visual vibe..."
+              placeholder="Tell me about your store location, special opening offers, products to highlight, or target campaign dates..."
               className="rounded-xl border border-white/10 bg-zinc-900/90 p-3.5 text-xs sm:text-sm text-white placeholder:text-white/30 focus:border-white/30 focus:ring-1 focus:ring-white/20 focus:outline-none transition resize-none"
             />
           </label>

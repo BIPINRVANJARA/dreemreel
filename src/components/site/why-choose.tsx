@@ -23,18 +23,18 @@ export function WhyChoose() {
           
           {/* Left Sticky Header */}
           <div className="lg:col-span-5 lg:sticky lg:top-28 text-left space-y-4">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-bold uppercase tracking-widest text-white/70">
-              <Sparkles className="h-3.5 w-3.5 text-white" />
-              THE CREATOR ADVANTAGE
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <Sparkles className="h-3.5 w-3.5" />
+              THE PROMOTER ADVANTAGE
             </div>
             
             <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-[1.05]">
-              WHY BRANDS <br />
-              <span className="text-white/70 italic font-serif">WORK WITH ME</span>
+              WHY BUSINESSES <br />
+              <span className="text-white/70 italic font-serif">COLLABORATE WITH ME</span>
             </h2>
             
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              Instead of hiring a photographer, booking a separate model, and struggling to create engaging reels yourself — you get the complete package: <span className="text-white font-semibold">Model + Presenter + Content Creator</span>.
+              Instead of spending money on static flyers or traditional newspaper ads that get ignored — you get an engaging on-camera creator: <span className="text-white font-semibold">Presenter + Video Production + Targeted Local Distribution</span>.
             </p>
 
             <div className="pt-4">
@@ -42,7 +42,7 @@ export function WhyChoose() {
                 href="#contact"
                 className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-white/90 transition"
               >
-                Start A Campaign →
+                Book Paid Promotion →
               </a>
             </div>
           </div>

@@ -24,10 +24,10 @@ export function AboutSiddhraj() {
                   Desai Siddhraj
                 </p>
                 <p className="text-base font-bold text-white">
-                  Fashion Creator & Reel Promoter
+                  Brand Promoter & Commercial Creator
                 </p>
                 <p className="text-xs text-white/60 flex items-center gap-1 mt-1">
-                  <MapPin className="h-3 w-3" /> Mehtapura, Himmatnagar
+                  <MapPin className="h-3 w-3 text-emerald-400" /> Mehtapura, Himmatnagar
                 </p>
               </div>
             </div>
@@ -35,32 +35,32 @@ export function AboutSiddhraj() {
 
           {/* Bio & Vision */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-bold uppercase tracking-widest text-white/80">
-              <Sparkles className="h-3.5 w-3.5 text-white" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <Sparkles className="h-3.5 w-3.5" />
               MEET SIDDHRAJ
             </div>
 
             <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white leading-[1.05]">
-              FASHION. CAMERA. <br />
+              CREATOR. PROMOTER. <br />
               <span className="text-white/70 italic font-serif">COMMUNITY.</span>
             </h2>
 
             <div className="space-y-4 text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl">
               <p>
-                I'm <span className="text-white font-bold">Desai Siddhraj</span>, a fashion-focused content creator from Himmatnagar, Gujarat.
+                I'm <span className="text-white font-bold">Desai Siddhraj</span>, a commercial reel creator and brand promoter from Himmatnagar, Gujarat.
               </p>
               <p>
-                I create short-form fashion content by wearing and showcasing clothing collections in a way that feels natural, energetic, and made for today's fast-moving social media audience.
+                I help retail shops, showrooms, cafes, fitness gyms, tech outlets, and local brands connect with thousands of active local customers through authentic, high-impact video reels.
               </p>
               <p>
-                From new arrivals and streetwear to royal festive and wedding collections, I collaborate with clothing stores to transform their physical racks into high-engagement, shareable Instagram reels that make people stop scrolling and visit the store.
+                Whether you're hosting a store grand opening, launching a seasonal collection, introducing a new cafe menu, or promoting special festival discounts — I deliver complete end-to-end promotional video production and local audience reach that drives real footfall.
               </p>
             </div>
 
             {/* Quick Location & Direct Social CTAs */}
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <a
-                href="https://wa.me/919016353934?text=Hi%20Siddhraj%2C%20I'd%20like%20to%20discuss%20a%20fashion%20collaboration%20for%20my%20store."
+                href="https://wa.me/919016353934?text=Hi%20Siddhraj%2C%20I'd%20like%20to%20book%20a%20paid%20promotion%20for%20my%20business."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-black shadow-lg hover:bg-white/90 transition"

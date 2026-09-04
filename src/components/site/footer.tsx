@@ -11,20 +11,20 @@ export function SiteFooter() {
             <span className="text-lg font-black uppercase tracking-tight text-white">DESAI SIDDHRAJ</span>
           </Link>
           <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-            Fashion Creator · Reel Promoter · Brand Collaborator
+            Brand Promoter · Commercial Reels · Store Collaborations
           </p>
           <p className="max-w-md text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            Collaborating with clothing stores and fashion brands to create high-energy, shareable reels that turn new collections into viral feed moments and store footfall.
+            Collaborating with retail shops, cafes, showrooms, and local brands across Gujarat to create high-impact, shareable promotional reels that drive customer discovery and store visits.
           </p>
         </div>
         <div>
           <p className="text-xs font-bold uppercase tracking-wider text-white/60">Explore</p>
           <ul className="mt-3 space-y-2 text-xs font-semibold uppercase tracking-wider">
-            <li><a href="/#reels" className="text-white/70 hover:text-white transition">The Reels</a></li>
-            <li><a href="/#collaborations" className="text-white/70 hover:text-white transition">Collaborations</a></li>
-            <li><a href="/#what-i-create" className="text-white/70 hover:text-white transition">What I Create</a></li>
+            <li><a href="/#reels" className="text-white/70 hover:text-white transition">The Promotions</a></li>
+            <li><a href="/#collaborations" className="text-white/70 hover:text-white transition">Brand Collabs</a></li>
+            <li><a href="/#what-i-create" className="text-white/70 hover:text-white transition">Services</a></li>
             <li><a href="/#about" className="text-white/70 hover:text-white transition">About Siddhraj</a></li>
-            <li><a href="/#contact" className="text-white/70 hover:text-white transition">Start Collaboration</a></li>
+            <li><a href="/#contact" className="text-white/70 hover:text-white transition">Book Promotion</a></li>
           </ul>
         </div>
         <div>
@@ -66,7 +66,7 @@ export function SiteFooter() {
           </div>
           
           <div className="flex items-center gap-4">
-            <span className="text-[11px] text-white/40 hidden lg:inline">Fashion Creator & Reel Promoter · Himmatnagar</span>
+            <span className="text-[11px] text-white/40 hidden lg:inline">Brand Promoter & Reel Creator · Himmatnagar & Gujarat</span>
             <Link
               to="/admin"
               className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20 transition cursor-pointer"

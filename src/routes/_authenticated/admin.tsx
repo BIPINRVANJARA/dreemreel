@@ -94,7 +94,7 @@ function Admin() {
   const [formStoreName, setFormStoreName] = useState("");
   const [formCollectionName, setFormCollectionName] = useState("");
   const [formViewsCount, setFormViewsCount] = useState("");
-  const [formCategory, setFormCategory] = useState<ReelCategory>("new_collection");
+  const [formCategory, setFormCategory] = useState<ReelCategory>("store_launch");
   const [formLocation, setFormLocation] = useState("");
   const [formDuration, setFormDuration] = useState(30);
   const [formFeatured, setFormFeatured] = useState(false);
@@ -604,7 +604,7 @@ VALUES
     setFormStoreName("");
     setFormCollectionName("");
     setFormViewsCount("");
-    setFormCategory("new_collection");
+    setFormCategory("store_launch");
     setFormLocation("");
     setFormDuration(30);
     setFormFeatured(false);
@@ -1047,7 +1047,7 @@ VALUES
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Festive Kurta & Royal Indo-Western Edit"
+                  placeholder="e.g. Grand Opening Walkthrough & Festive Launch Edit"
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value)}
                   className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
@@ -1056,20 +1056,20 @@ VALUES
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-muted-foreground">Store / Brand Name</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Store / Brand / Business Name</label>
                   <input
                     type="text"
-                    placeholder="e.g. One Way Fashion Hue"
+                    placeholder="e.g. Royal Cafe / Shreeji Store / Auto Hub"
                     value={formStoreName}
                     onChange={(e) => setFormStoreName(e.target.value)}
                     className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-muted-foreground">Collection / Drop Name</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Campaign / Event Name</label>
                   <input
                     type="text"
-                    placeholder="e.g. Festive Drop '26"
+                    placeholder="e.g. Grand Opening '26 / Festival Mega Sale"
                     value={formCollectionName}
                     onChange={(e) => setFormCollectionName(e.target.value)}
                     className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-white focus:outline-none focus:border-primary"

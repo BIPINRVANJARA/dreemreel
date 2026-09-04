@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const links = [
-  { href: "/#reels", label: "Reels" },
-  { href: "/#collaborations", label: "Collaborations" },
-  { href: "/#what-i-create", label: "What I Create" },
+  { href: "/#reels", label: "Promotions" },
+  { href: "/#collaborations", label: "Brand Collabs" },
+  { href: "/#what-i-create", label: "Services" },
   { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/#contact", label: "Book Promotion" },
 ];
 
 export function SiteNav() {
@@ -35,8 +35,8 @@ export function SiteNav() {
               <span className="text-base sm:text-lg font-bold tracking-tight text-white group-hover:text-white/90">
                 DESAI SIDDHRAJ
               </span>
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground -mt-1">
-                Fashion Creator
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-emerald-400 -mt-1">
+                Brand Promoter & Creator
               </span>
             </div>
           </Link>
@@ -49,7 +49,7 @@ export function SiteNav() {
           </div>
           <div className="flex items-center gap-3">
             <a href="/#contact" className="hidden rounded-full bg-white px-5 py-2 text-xs font-bold uppercase tracking-wider text-black shadow-[0_0_20px_rgba(255,255,255,0.25)] transition hover:bg-white/90 hover:scale-[1.02] sm:inline-flex items-center gap-1.5">
-              Work With Me <span className="text-xs">→</span>
+              Book Promotion <span className="text-xs">→</span>
             </a>
             <button
               type="button"

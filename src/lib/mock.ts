@@ -1,12 +1,12 @@
 export type ReelCategory =
-  | "new_collection"
-  | "mens_wear"
-  | "womens_wear"
-  | "festive_collection"
-  | "outfit_showcase"
-  | "streetwear"
-  | "ethnic"
-  | "store_promotion"
+  | "store_launch"
+  | "fashion_clothing"
+  | "food_cafes"
+  | "electronics_mobile"
+  | "jewellery_watches"
+  | "fitness_gym"
+  | "automotive"
+  | "business_promo"
   | "other";
 
 export type Reel = {
@@ -31,126 +31,117 @@ export const MOCK_REELS: Reel[] = [];
 export const HERO_VIDEO = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
 
 export const CATEGORY_LABELS: Record<ReelCategory | "all", string> = {
-  all: "All Looks",
-  new_collection: "New Drops",
-  mens_wear: "Men's Wear",
-  womens_wear: "Women's Wear",
-  festive_collection: "Festive Collections",
-  outfit_showcase: "Outfit Showcases",
-  streetwear: "Streetwear",
-  ethnic: "Ethnic & Royal",
-  store_promotion: "Store Promos",
-  other: "Collaborations",
+  all: "All Promotions",
+  store_launch: "Store Launches & Openings",
+  fashion_clothing: "Clothing & Fashion",
+  food_cafes: "Cafes & Restaurants",
+  electronics_mobile: "Mobiles & Gadgets",
+  jewellery_watches: "Jewellery & Luxury",
+  fitness_gym: "Gym & Fitness",
+  automotive: "Cars & Showrooms",
+  business_promo: "Local Businesses",
+  other: "Special Campaigns",
 };
 
 export const SERVICES = [
   {
-    slug: "new-collection-reels",
+    slug: "store-launch-campaigns",
+    icon: "rocket",
+    title: "Store Launches & Openings",
+    description: "Generate massive opening hype and day-one footfall for your new shop, showroom, outlet, or cafe with high-energy announcement reels.",
+    deliverables: ["Opening hype reel with store tour", "Location and landmark highlights", "Special opening offer callouts", "Viral Instagram promotion"],
+  },
+  {
+    slug: "fashion-retail-promotion",
     icon: "shirt",
-    title: "New Collection Reels",
-    description: "Showcase your newest arrivals by having them worn, styled, and filmed with cinematic movement that makes customers want the look.",
-    deliverables: ["Styled lookbook reel (9:16)", "Cinematic color grade & sound design", "High-retention transitions", "Store location tag & promo caption"],
+    title: "Fashion & Retail Promotion",
+    description: "Showcase new clothing drops, footwear, accessories, and seasonal collections styled and worn with high-retention cinematic transitions.",
+    deliverables: ["Model-styled lookbook reel", "Fabric closeups & outfit flow", "Store tag & shopping CTA", "4K HDR ready-to-post video"],
   },
   {
-    slug: "fashion-promotion",
-    icon: "film",
-    title: "Fashion Promotion",
-    description: "Short-form promotional content engineered specifically for Instagram Reels, algorithm virality, and maximum store discovery.",
-    deliverables: ["Trending audio integration", "Hook-optimized first 3 seconds", "Call-to-action for store visits", "Direct shareable reel file"],
+    slug: "food-cafe-showcases",
+    icon: "coffee",
+    title: "Cafes & Restaurants",
+    description: "Make mouths water with delicious food videography, aesthetic cafe ambiance tours, kitchen action, and chef signature dish showcases.",
+    deliverables: ["Aesthetic ambiance & vibe capture", "Signature dish & drink highlights", "Menu & pricing callouts", "Google Maps / location directions"],
   },
   {
-    slug: "outfit-showcases",
-    icon: "sparkles",
-    title: "Outfit Showcases",
-    description: "Highlight individual outfits, layer combinations, texture details, accessories, and complete color palettes in crystal-clear 4K.",
-    deliverables: ["Detailed fabric & texture closeups", "Full 360-degree outfit motion", "Styling breakdown", "Story highlights support"],
-  },
-  {
-    slug: "festive-collections",
-    icon: "flame",
-    title: "Festive Collections",
-    description: "Seasonal promotional drops tailored for Diwali, Navratri, Wedding Season, Eid, New Year, and high-demand shopping festivals.",
-    deliverables: ["Festive-themed music & pacing", "Traditional & Indo-western styling", "Multi-look transition cuts", "Targeted local campaign boost"],
-  },
-  {
-    slug: "social-media-content",
+    slug: "tech-mobile-gadgets",
     icon: "smartphone",
-    title: "Social Media Ready",
-    description: "Ready-to-post vertical assets with optimized aspect ratios, store handles, and captions that clothing brands can post right away.",
-    deliverables: ["Native 9:16 vertical resolution", "Optimized cover thumbnail", "Pre-written post copy & hashtags", "Fast 24-48 hr delivery"],
+    title: "Electronics & Mobile Stores",
+    description: "Highlight new smartphone unboxings, gadget features, festive discount deals, and exchange offers with tech-savvy creator presentations.",
+    deliverables: ["Device hands-on & key specs", "Store festival discount announcements", "Accessories & warranty highlights", "High-conversion buyer hook"],
   },
   {
-    slug: "store-collaborations",
+    slug: "jewellery-luxury-promos",
+    icon: "sparkles",
+    title: "Jewellery & Luxury Showcases",
+    description: "Give gold, diamond, silver, and bridal jewellery the premium cinematic lighting and detail focus they deserve for wedding season shoppers.",
+    deliverables: ["Macro detail & sparkle lighting", "Bridal & festive collection styling", "Trust & hallmarking highlights", "Store visit invitations"],
+  },
+  {
+    slug: "business-brand-partnerships",
     icon: "handshake",
-    title: "Store Collaborations",
-    description: "Long-term creator partnerships and monthly brand ambassador packages for regular new arrival releases and foot-traffic growth.",
-    deliverables: ["Monthly content schedules", "Exclusive brand representation", "Priority shoot availability", "Dedicated store spotlight"],
+    title: "Paid Brand Collaborations",
+    description: "End-to-end promotional creator partnerships for salons, fitness gyms, auto showrooms, clinics, and local services looking for measurable customer growth.",
+    deliverables: ["Creator on-camera walkthrough", "Problem-solution hook scripting", "Dedicated audience distribution", "Measurable inquiry generation"],
   },
 ];
 
 export const CREATOR_ADVANTAGES = [
   {
     number: "01",
-    title: "Real Person",
-    desc: "Customers don't just see clothes on a hanger. They see how the fabric flows, fits, and looks when actually worn by a real model.",
+    title: "On-Camera Presence",
+    desc: "I step in front of the camera as your presenter, model, and narrator — giving your business a human face that customers immediately trust.",
   },
   {
     number: "02",
-    title: "Local Audience",
-    desc: "Content connects authentically with the fashion-conscious community across Himmatnagar, Sabarkantha, and Gujarat.",
+    title: "Targeted Local Reach",
+    desc: "Reach real customers across Himmatnagar, Sabarkantha, and North Gujarat who are ready to visit your store and buy.",
   },
   {
     number: "03",
-    title: "Reels First",
-    desc: "Every cut, transition, and beat drop is structured around Instagram's short-form algorithm for maximum organic reach.",
+    title: "Algorithm-First Reels",
+    desc: "Hook-focused first 3 seconds, dynamic pacing, and trending audio designed specifically to trigger Instagram's explore algorithm.",
   },
   {
     number: "04",
-    title: "Personality Driven",
-    desc: "Natural, energetic creator presence that feels genuine and relatable rather than like a forced, traditional advertisement.",
+    title: "All-In-One Production",
+    desc: "You don't need separate videographers, models, or scriptwriters. I handle styling, scripting, shooting, editing, and promotion.",
   },
   {
     number: "05",
-    title: "Store Focused",
-    desc: "Every reel is crafted with one clear objective: showcasing the collection to drive customer curiosity and store visits.",
+    title: "Footfall & Revenue Focus",
+    desc: "Every reel has one clear objective: driving real walk-in customers, phone inquiries, and sales directly to your store.",
   },
 ];
 
 export const PROCESS_STEPS = [
-  { n: "01", title: "Discover", desc: "The clothing store shares the upcoming collection, new drop, or festive theme." },
-  { n: "02", title: "Select", desc: "We handpick the strongest outfits, standout colors, and high-impact combinations." },
-  { n: "03", title: "Style", desc: "Create complete looks with matching accessories, footwear, and setting aesthetics." },
-  { n: "04", title: "Shoot", desc: "Film dynamic fashion walks, cinematic angles, detail close-ups, and smooth transitions." },
-  { n: "05", title: "Edit", desc: "Color grading, beat-sync sound design, pacing refinement, and export in 4K." },
-  { n: "06", title: "Publish", desc: "The final reel goes live, putting your collection in front of thousands of potential buyers." },
+  { n: "01", title: "Brief", desc: "You share your store type, current offers, new launches, or business promotion goals." },
+  { n: "02", title: "Concept", desc: "We script an engaging reel concept with a strong opening hook and compelling call-to-action." },
+  { n: "03", title: "Visit & Shoot", desc: "I visit your store/location with professional gear to film cinematic angles, products, and ambiance." },
+  { n: "04", title: "Edit & Polish", desc: "Fast-paced editing, color grading, beat-matching sound design, and text graphics in 4K." },
+  { n: "05", title: "Review", desc: "You preview and approve the final reel before it goes live to ensure 100% brand satisfaction." },
+  { n: "06", title: "Promote & Convert", desc: "The reel is published and promoted, driving hundreds of local viewers straight to your business." },
 ];
 
 export const COLLABORATIONS = [
   {
     id: "collab-1",
     store_name: "One Way Fashion Hue",
-    category: "Men's Wear & Ethnic",
+    category: "Men's Fashion & Festive Store",
     location: "Himmatnagar",
-    campaign: "Festive Collection & New Drop '26",
-    description: "Turned their latest festive collection into an engaging series of high-energy fashion reels that drove significant local customer inquiries.",
+    campaign: "Festive Collection Launch",
+    description: "Executed a viral promotional campaign showcasing their new royal festive collection that drove massive footfall and direct customer inquiries.",
     instagram_tag: "@onewayfashionhue",
-  },
-  {
-    id: "collab-2",
-    store_name: "The Urban Store",
-    category: "Streetwear & Casuals",
-    location: "Himmatnagar",
-    campaign: "Summer Drop '26",
-    description: "Styled and shot monochrome casuals and oversized tees with fast-paced aesthetic transitions tailored for viral reach.",
-    instagram_tag: "@theurbanstore",
   },
 ];
 
 export const COMMUNITY_STATS = [
   { value: 1.6, suffix: "K+", label: "Instagram Community", sub: "@desaii_sidhdhraj" },
-  { value: 50, suffix: "+", label: "Outfits Styled", sub: "Collections featured" },
-  { value: 100, suffix: "%", label: "Reels Focused", sub: "Engineered for reach" },
-  { value: 1, suffix: "", label: "Himmatnagar", sub: "Local creator presence" },
+  { value: 100, suffix: "+", label: "Stores & Drops Promoted", sub: "Commercial campaigns" },
+  { value: 100, suffix: "%", label: "Reels & Video Focus", sub: "Engineered for reach" },
+  { value: 1, suffix: "", label: "Himmatnagar & Gujarat", sub: "Hyper-local impact" },
 ];
 
 export function getDirectVideoUrl(url: string): string {

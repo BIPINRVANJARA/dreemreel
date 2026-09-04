@@ -9,12 +9,14 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 
 const CATS: (ReelCategory | "all")[] = [
   "all",
-  "new_collection",
-  "festive_collection",
-  "mens_wear",
-  "streetwear",
-  "ethnic",
-  "store_promotion",
+  "store_launch",
+  "fashion_clothing",
+  "food_cafes",
+  "electronics_mobile",
+  "jewellery_watches",
+  "fitness_gym",
+  "automotive",
+  "business_promo",
 ];
 
 export function PortfolioGrid({ compact = false }: { compact?: boolean }) {
@@ -57,12 +59,12 @@ export function PortfolioGrid({ compact = false }: { compact?: boolean }) {
       <div className="mx-auto max-w-7xl px-6">
         {!compact && (
           <div className="mb-10 max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">COLLECTION ARCHIVE</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">COMMERCIAL PORTFOLIO</p>
             <h2 className="mt-2 text-3xl sm:text-5xl font-black uppercase tracking-tight text-white">
-              Every look. Every drop.
+              Stores. Brands. Promotions.
             </h2>
             <p className="mt-3 text-muted-foreground text-xs sm:text-sm leading-relaxed">
-              Explore curated reels created for clothing stores, festive campaigns, and trend drops.
+              Explore promotional campaigns created for retail shops, cafes, electronics showrooms, gyms, and local businesses across Gujarat.
             </p>
           </div>
         )}
@@ -79,7 +81,7 @@ export function PortfolioGrid({ compact = false }: { compact?: boolean }) {
           </div>
           <label className="relative flex items-center shrink-0">
             <Search className="pointer-events-none absolute left-3.5 h-4 w-4 text-white/40" />
-            <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search store, outfit, drop..."
+            <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search brand, store, city, campaign..."
               className="w-full rounded-full border border-white/15 bg-white/5 pl-10 pr-4 py-2.5 text-xs font-medium text-white placeholder:text-white/40 focus:border-white/40 focus:ring-1 focus:ring-white/20 focus:outline-none transition duration-200 sm:w-64" />
           </label>
         </div>
