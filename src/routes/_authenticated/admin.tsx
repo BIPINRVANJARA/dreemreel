@@ -645,6 +645,17 @@ VALUES
     }
   };
 
+  const deleteLead = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this lead?")) return;
+    try {
+      await deleteDoc(doc(db, "leads", id));
+      toast.success("Lead deleted.");
+      loadData();
+    } catch (err: any) {
+      toast.error(err.message || "Failed to delete lead.");
+    }
+  };
+
   const toggleFeatured = async (reel: Reel) => {
     try {
       await updateDoc(doc(db, "reels", reel.id), { featured: !reel.featured });
@@ -851,16 +862,25 @@ VALUES
                         </td>
                         <td className="p-4 text-xs text-muted-foreground max-w-[280px] truncate">{l.message ?? "—"}</td>
                         <td className="p-4">
-                          {l.phone && (
-                            <a
-                              href={`https://wa.me/${l.phone.replace(/\D/g, "")}`}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs text-emerald-400 hover:bg-emerald-500/20 transition"
+                          <div className="flex items-center gap-2">
+                            {l.phone && (
+                              <a
+                                href={`https://wa.me/${l.phone.replace(/\D/g, "")}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs text-emerald-400 hover:bg-emerald-500/20 transition"
+                              >
+                                WhatsApp <ExternalLink className="h-3 w-3" />
+                              </a>
+                            )}
+                            <button
+                              onClick={() => deleteLead(l.id)}
+                              className="p-1.5 rounded-lg text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition cursor-pointer"
+                              title="Delete Lead"
                             >
-                              WhatsApp <ExternalLink className="h-3 w-3" />
-                            </a>
-                          )}
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -902,16 +922,25 @@ VALUES
                     {l.message && (
                       <p className="text-xs text-muted-foreground line-clamp-2">{l.message}</p>
                     )}
-                    {l.phone && (
-                      <a
-                        href={`https://wa.me/${l.phone.replace(/\D/g, "")}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 text-xs text-emerald-400 hover:bg-emerald-500/20 transition"
+                    <div className="flex items-center justify-between gap-2 pt-2 border-t border-border/50">
+                      {l.phone ? (
+                        <a
+                          href={`https://wa.me/${l.phone.replace(/\D/g, "")}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 text-xs text-emerald-400 hover:bg-emerald-500/20 transition"
+                        >
+                          WhatsApp <ExternalLink className="h-3 w-3" />
+                        </a>
+                      ) : <span />}
+                      <button
+                        onClick={() => deleteLead(l.id)}
+                        className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-300 p-1.5 px-2.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition cursor-pointer"
+                        title="Delete Lead"
                       >
-                        WhatsApp <ExternalLink className="h-3 w-3" />
-                      </a>
-                    )}
+                        <Trash2 className="h-3.5 w-3.5" /> Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
                 {leads.length === 0 && (
@@ -964,32 +993,45 @@ VALUES
                 >
                   <div className="relative aspect-[9/16] bg-black">
                     <AdminReelVideo src={r.video_url} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none" />
                     
-                    <div className="absolute top-3 left-3 flex flex-wrap gap-1">
-                      <span className="label rounded-full bg-black/60 px-2.5 py-1 text-[10px] text-white backdrop-blur border border-white/10">
+                    <div className="absolute top-2.5 left-2.5 flex flex-wrap gap-1 z-10 pointer-events-none">
+                      <span className="label rounded-full bg-black/70 px-2 py-0.5 text-[9px] text-white backdrop-blur border border-white/15">
                         {CATEGORY_LABELS[r.category] || "Other"}
                       </span>
                     </div>
 
-                    <div className="absolute bottom-3 inset-x-3 text-left">
-                      <p className="text-sm font-semibold text-white leading-snug">{r.title}</p>
-                      {r.location && <p className="text-[10px] text-muted-foreground mt-0.5">{r.location}</p>}
+                    {r.featured && (
+                      <div className="absolute top-2.5 right-2.5 z-10 pointer-events-none">
+                        <span className="rounded-full bg-primary/95 text-primary-foreground px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase shadow-md flex items-center gap-1 backdrop-blur">
+                          <Smartphone className="h-2.5 w-2.5" /> Mockup
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="absolute bottom-2.5 inset-x-2.5 text-left pointer-events-none">
+                      <p className="text-xs sm:text-sm font-semibold text-white leading-snug line-clamp-2">{r.title}</p>
+                      {r.store_name ? (
+                        <p className="text-[10px] text-primary mt-0.5 font-medium line-clamp-1">{r.store_name}</p>
+                      ) : r.location ? (
+                        <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1">{r.location}</p>
+                      ) : null}
                     </div>
 
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 backdrop-blur-sm transition duration-300">
+                    {/* Desktop Hover Quick Actions Overlay */}
+                    <div className="hidden md:flex absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 bg-black/50 backdrop-blur-sm transition duration-200 z-20">
                       <div className="flex gap-2">
                         <button
                           onClick={() => editReel(r)}
-                          className="grid h-9 w-9 place-items-center rounded-full bg-white text-black hover:scale-105 transition cursor-pointer"
+                          className="grid h-9 w-9 place-items-center rounded-full bg-white text-black hover:scale-110 transition cursor-pointer shadow-lg"
                           title="Edit Reel"
                         >
                           <Edit2 className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => toggleFeatured(r)}
-                          className={`grid h-9 w-9 place-items-center rounded-full transition cursor-pointer ${
-                            r.featured ? "bg-primary text-primary-foreground" : "bg-black/60 text-white hover:bg-black"
+                          className={`grid h-9 w-9 place-items-center rounded-full transition cursor-pointer shadow-lg ${
+                            r.featured ? "bg-primary text-primary-foreground" : "bg-black/80 text-white hover:bg-black"
                           }`}
                           title={r.featured ? "Remove from Mockup Showcase" : "Show inside Phone Mockup Showcase"}
                         >
@@ -997,7 +1039,7 @@ VALUES
                         </button>
                         <button
                           onClick={() => deleteReel(r.id)}
-                          className="grid h-9 w-9 place-items-center rounded-full bg-red-600 text-white hover:scale-105 transition cursor-pointer"
+                          className="grid h-9 w-9 place-items-center rounded-full bg-red-600 text-white hover:scale-110 transition cursor-pointer shadow-lg"
                           title="Delete Reel"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -1005,11 +1047,53 @@ VALUES
                       </div>
                     </div>
                   </div>
-                  <div className="p-3 border-t border-border flex items-center justify-between bg-surface/40 text-xs">
-                    <span className="text-muted-foreground">Duration: {r.duration_seconds}s</span>
-                    <span className="text-muted-foreground flex items-center gap-1">
-                      <Video className="h-3.5 w-3.5 text-emerald-400" /> Direct Video
-                    </span>
+
+                  {/* Card Footer with ALWAYS Visible Mobile & Desktop Controls */}
+                  <div className="p-2.5 sm:p-3 border-t border-border bg-surface/40 flex flex-col gap-2">
+                    <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                      <span>{r.duration_seconds}s</span>
+                      {r.views_count ? (
+                        <span className="text-primary font-medium">{r.views_count} views</span>
+                      ) : (
+                        <span className="flex items-center gap-1 text-[10px]">
+                          <Video className="h-3 w-3 text-emerald-400" /> Direct
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Permanent Buttons - completely visible and tap-friendly on mobile */}
+                    <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-white/5">
+                      <button
+                        onClick={() => editReel(r)}
+                        className="inline-flex items-center justify-center gap-1 py-2 px-1 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white text-[11px] font-semibold transition cursor-pointer"
+                        title="Edit / Update Reel"
+                      >
+                        <Edit2 className="h-3.5 w-3.5 text-primary" />
+                        <span>Edit</span>
+                      </button>
+
+                      <button
+                        onClick={() => toggleFeatured(r)}
+                        className={`inline-flex items-center justify-center gap-1 py-2 px-1 rounded-xl border transition cursor-pointer active:scale-95 text-[11px] ${
+                          r.featured
+                            ? "bg-primary/20 border-primary text-primary font-semibold"
+                            : "bg-white/5 border-white/10 text-muted-foreground hover:text-white"
+                        }`}
+                        title={r.featured ? "Remove from Mockup Showcase" : "Show inside Phone Mockup Showcase"}
+                      >
+                        <Smartphone className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">{r.featured ? "Active" : "Phone"}</span>
+                      </button>
+
+                      <button
+                        onClick={() => deleteReel(r.id)}
+                        className="inline-flex items-center justify-center gap-1 py-2 px-1 rounded-xl bg-red-500/10 hover:bg-red-500/20 active:scale-95 border border-red-500/20 text-red-400 hover:text-red-300 text-[11px] font-semibold transition cursor-pointer"
+                        title="Delete Reel"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                        <span>Del</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
